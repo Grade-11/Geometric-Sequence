@@ -415,34 +415,40 @@
     // ==========================================
     function logAction(action, detail, finishTime = null) {
         if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
-            console.warn("Chưa cấu hình Google Script URL!");
+            alert("LỖI CÀI ĐẶT: Bạn chưa dán Link Web App từ Google Sheet vào code!\nHãy sửa dòng 470 trong file index.html.");
+            console.error("Thiếu GOOGLE_SCRIPT_URL");
             return;
         }
 
-        const fd = new FormData();
-        fd.append("TenHocSinh", state.name); 
-        fd.append("ID", state.id);
-        fd.append("HanhDong", action); 
-        fd.append("ChiTiet", detail);
+        // CHUYỂN ĐỔI SANG URLSearchParams ĐỂ TƯƠNG THÍCH TỐT HƠN VỚI GOOGLE APPS SCRIPT
+        const params = new URLSearchParams();
+        params.append("TenHocSinh", state.name); 
+        params.append("ID", state.id);
+        params.append("HanhDong", action); 
+        params.append("ChiTiet", detail);
         
         if(finishTime) {
-            fd.append("ThoiGianLamBai", finishTime);
+            params.append("ThoiGianLamBai", finishTime);
         }
 
-        // Sử dụng mode 'no-cors' để gửi dữ liệu đi mà không cần đợi phản hồi (fire and forget)
+        // Gửi bằng fetch với mode 'no-cors'
+        // Lưu ý: no-cors sẽ không trả về response readable, nhưng vẫn gửi dữ liệu đi
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST', 
             mode: 'no-cors', 
-            body: fd
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params
         }).then(() => {
-            console.log("Đã gửi dữ liệu:", action);
+            console.log(`Đã gửi dữ liệu [${action}] đến Google Sheet.`);
             if(action === 'Nộp bài') {
-                document.getElementById('submitStatus').innerText = "✅ Đã lưu kết quả thành công!";
+                document.getElementById('submitStatus').innerText = "✅ Đã gửi dữ liệu thành công!";
             }
         }).catch(err => {
             console.error("Lỗi gửi dữ liệu:", err);
             if(action === 'Nộp bài') {
-                document.getElementById('submitStatus').innerText = "❌ Lỗi kết nối máy chủ!";
+                document.getElementById('submitStatus').innerText = "❌ Lỗi kết nối! Kiểm tra lại đường truyền.";
             }
         });
     }
@@ -864,4 +870,3 @@
 
 </body>
 </html>
-
