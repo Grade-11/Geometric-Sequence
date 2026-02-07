@@ -115,6 +115,14 @@
         .inline-alert { margin-top: 15px; padding: 15px; border-radius: 8px; font-weight: 600; display: none; animation: fadeIn 0.3s; font-size: 1.1em; line-height: 1.5; text-align: left; }
         .alert-success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
         .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+        /* Exercise Styles */
+        .exercise-section { margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px; }
+        .exercise-item { margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .exercise-item strong { display: block; margin-bottom: 8px; color: var(--primary-dark); }
+        .fill-blank { border: none; border-bottom: 2px solid #94a3b8; background: transparent; padding: 2px 5px; width: 120px; text-align: center; outline: none; font-weight: bold; color: var(--primary); }
+        .fill-blank:focus { border-bottom-color: var(--primary); }
+        .radio-option { display: block; margin: 8px 0; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -220,7 +228,64 @@
             💡 Công thức tổng quát: <span class="math-symbol">u<sub>n</sub> = u<sub>1</sub> × q<sup>n-1</sup></span>
             <br><span style="font-size: 0.7em; color: #475569;">(Số virus ở chu kỳ n = Số ban đầu × Hệ số nhân mũ n-1)</span>
         </div>
-        <button class="btn-primary" onclick="completeTab1()" style="float: right; margin-top: 10px;">Hoàn thành Phần 1 →</button>
+
+        <!-- NEW EXERCISE SECTION -->
+        <div class="exercise-section">
+            <div class="info-card" style="border-left: 5px solid var(--danger);">
+                <h3 style="color: var(--danger); margin-top: 0;">📚 Bài tập tình huống: COVID-19</h3>
+                <p style="font-size: 0.95em; line-height: 1.6;">
+                    Virus corona gây hội chứng hô hấp cấp tính nặng 2, viết tắt là SARS-CoV-2, là một chủng coronavirus gây ra bệnh viêm đường hô hấp cấp do virus corona 2019 (COVID-19), xuất hiện lần đầu tiên vào tháng 12 năm 2019, trong đợt bùng phát đại dịch COVID-19 ở thành phố Vũ Hán, Trung Quốc và bắt đầu lây lan nhanh chóng, sau đó trở thành một đại dịch toàn cầu. 
+                    Khi virus SARS-CoV-2 xâm nhập vào một tế bào cơ thể, nó sử dụng bộ máy của tế bào để nhân bản. Giả sử trong một thí nghiệm kiểm soát, <strong>một con virus ban đầu sau mỗi chu kỳ nhân bản sẽ tạo ra thêm 2 con virus mới</strong> (tức tổng số tăng gấp 3 lần, hoặc giả sử đơn giản là nhân đôi tùy đề bài - <em>theo đề bài này ta hiểu là 1 thành 2, q=2</em>).
+                </p>
+
+                <div class="exercise-item">
+                    <strong>Câu 1: Giả sử ban đầu có 1 virus SARS-CoV-2 xâm nhập vào tế bào. Hãy tính số lượng virus trong 5 chu kì đầu (với q=2).</strong>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                        <input type="number" class="fill-blank" id="q1_1" placeholder="u1">
+                        <input type="number" class="fill-blank" id="q1_2" placeholder="u2">
+                        <input type="number" class="fill-blank" id="q1_3" placeholder="u3">
+                        <input type="number" class="fill-blank" id="q1_4" placeholder="u4">
+                        <input type="number" class="fill-blank" id="q1_5" placeholder="u5">
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu 2: Hãy tính tỉ lệ giữa số lượng virus ở chu kì thứ n và thứ (n-1)?</strong>
+                    Trả lời: <input type="number" class="fill-blank" id="q2_val">
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu 3: Gọi u<sub>n</sub> là số lượng virus trong n chu kỳ. Dự đoán công thức liên hệ giữa n và (n-1)?</strong>
+                    Trả lời: <input type="text" class="fill-blank" id="q3_val" style="width: 200px;" placeholder="Ví dụ: un = ...">
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu 4: Thực tế, 1 tế bào nhiễm 1 virus có thể tạo ra 1000 virus mới. Hãy cho biết công thức liên hệ lúc này?</strong>
+                    Trả lời: <input type="text" class="fill-blank" id="q4_val" style="width: 200px;">
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu 5: Điền vào chỗ trống:</strong>
+                    <p>Ta thấy số lượng virus SARS-CoV-2 trong các chu kì nhân bản sẽ tạo thành một <input type="text" class="fill-blank" id="q5_1" style="width:150px">, trong đó kể từ số hạng thứ hai, mỗi số hạng đều là tích của số hạng đứng ngay trước nó với <input type="text" class="fill-blank" id="q5_2" style="width:150px">.</p>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu 6: Công bội q của cấp số nhân ở câu 3 và 4 lần lượt là:</strong>
+                    q3 = <input type="number" class="fill-blank" id="q6_1"> và q4 = <input type="number" class="fill-blank" id="q6_2">
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Câu hỏi trắc nghiệm: Cấp số nhân (u<sub>n</sub>) với công bội q được cho bởi hệ thức truy hồi nào?</strong>
+                    <label class="radio-option"><input type="radio" name="mcq_formula" value="A"> A. u<sub>n</sub> = u<sub>n-1</sub> . q (n ≥ 2)</label>
+                    <label class="radio-option"><input type="radio" name="mcq_formula" value="B"> B. u<sub>n</sub> = u<sub>n-1</sub> / q (n ≥ 2)</label>
+                </div>
+
+                <button class="btn-primary" onclick="checkExerciseTab1()" style="width: 100%;">📤 GỬI BÀI LÀM</button>
+                <div id="ex_result_tab1" class="inline-alert" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <button class="btn-primary" onclick="completeTab1()" style="float: right; margin-top: 20px;">Hoàn thành Phần 1 →</button>
     </div>
 
     <!-- TAB 2: COMMUNITY SPREAD (SN) -->
@@ -547,6 +612,48 @@
         document.getElementById('hostCell').innerHTML = '<div style="color: #475569; text-align: center;">(Nhấn nút Bắt đầu để soi kính hiển vi)</div>';
         document.querySelector('#replicationTable tbody').innerHTML = '';
         document.getElementById('t1_conclusion').style.display = 'none';
+        
+        // Reset inputs
+        document.querySelectorAll('#tab1 input.fill-blank').forEach(i => i.value = '');
+        document.querySelectorAll('#tab1 input[type="radio"]').forEach(i => i.checked = false);
+        document.getElementById('ex_result_tab1').style.display = 'none';
+    }
+    
+    function checkExerciseTab1() {
+        // Collect answers
+        const q1 = [
+            document.getElementById('q1_1').value,
+            document.getElementById('q1_2').value,
+            document.getElementById('q1_3').value,
+            document.getElementById('q1_4').value,
+            document.getElementById('q1_5').value
+        ].join(', ');
+        
+        const q2 = document.getElementById('q2_val').value;
+        const q3 = document.getElementById('q3_val').value;
+        const q4 = document.getElementById('q4_val').value;
+        const q5_1 = document.getElementById('q5_1').value;
+        const q5_2 = document.getElementById('q5_2').value;
+        const q6_1 = document.getElementById('q6_1').value;
+        const q6_2 = document.getElementById('q6_2').value;
+        
+        const mcq = document.querySelector('input[name="mcq_formula"]:checked');
+        const q7 = mcq ? mcq.value : "Chưa chọn";
+
+        // Construct detail string for Sheet
+        const details = `Q1:[${q1}] | Q2:${q2} | Q3:${q3} | Q4:${q4} | Q5:${q5_1},${q5_2} | Q6:${q6_1},${q6_2} | Q7:${q7}`;
+
+        // Send to Sheet
+        logAction('Nộp bài tập Tab 1', details);
+
+        // UI Feedback (Neutral)
+        const resDiv = document.getElementById('ex_result_tab1');
+        resDiv.style.display = 'block';
+        resDiv.className = 'inline-alert alert-success'; // Use success style for "Sent successfully"
+        resDiv.style.backgroundColor = '#e0f2fe'; // Blue-ish neutral
+        resDiv.style.borderColor = '#7dd3fc';
+        resDiv.style.color = '#0284c7';
+        resDiv.innerHTML = `✅ Đã ghi nhận câu trả lời của bạn vào hệ thống.`;
     }
     
     function completeTab1() {
