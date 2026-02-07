@@ -445,7 +445,8 @@
     }
 
     function logAction(action, detail) {
-        if(GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes('AKfy')) {
+        // Đã sửa: Loại bỏ điều kiện chặn 'AKfy' vì URL thật thường chứa chuỗi này
+        if(GOOGLE_SCRIPT_URL) {
             const fd = new FormData();
             fd.append("TenHocSinh", state.name); fd.append("ID", state.id);
             fd.append("HanhDong", action); fd.append("ChiTiet", JSON.stringify(detail));
