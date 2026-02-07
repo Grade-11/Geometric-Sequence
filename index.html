@@ -155,6 +155,7 @@
     <h2 style="justify-content: center; color: white; border: none; margin: 0;">NHIỆM VỤ HOÀN THÀNH!</h2>
     <p>Bạn đã nắm vững kiến thức toán học để đẩy lùi dịch bệnh.</p>
     <p>Tổng thời gian: <span id="totalTimeCompleted"></span></p>
+    <div id="submitStatus" style="margin-top: 10px; color: #ecfdf5; font-style: italic;">Đang gửi kết quả về máy chủ...</div>
     <button onclick="restartLesson()" style="background: white; color: #059669; margin-top: 15px;">🔄 Nghiên cứu lại</button>
 </div>
 
@@ -397,8 +398,9 @@
     // Chuyển về chế độ Mock AI (không cần Key)
     const apiKey = ""; 
     
-    // Google Sheet (nếu có)
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz0JQIqwBWeSb0nF0YTNC5hw6ovyl2HsCgvS_vL53xsou-xIHTXphqCLGbfuu04cB_NAw/exec';
+    // 🔥 QUAN TRỌNG: Dán Link Web App (Exec URL) của bạn vào đây:
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlzGO4trLPGEoPXo7XElb1qRSH4Fxg7izl8-WpcpulMPQmpPHXju8r2Oi7vvQgQzrxmA/exec'; 
+    // Ví dụ: 'https://script.google.com/macros/s/AKfycbx.../exec'
     
     let state = {
         name: '', id: '', startTime: null, 
@@ -409,8 +411,42 @@
     let charts = { spread: null, prevention: null, vaccine: null };
 
     // ==========================================
-    // CORE FUNCTIONS
+    // CORE FUNCTIONS & LOGGING
     // ==========================================
+    function logAction(action, detail, finishTime = null) {
+        if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
+            console.warn("Chưa cấu hình Google Script URL!");
+            return;
+        }
+
+        const fd = new FormData();
+        fd.append("TenHocSinh", state.name); 
+        fd.append("ID", state.id);
+        fd.append("HanhDong", action); 
+        fd.append("ChiTiet", detail);
+        
+        if(finishTime) {
+            fd.append("ThoiGianLamBai", finishTime);
+        }
+
+        // Sử dụng mode 'no-cors' để gửi dữ liệu đi mà không cần đợi phản hồi (fire and forget)
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: fd
+        }).then(() => {
+            console.log("Đã gửi dữ liệu:", action);
+            if(action === 'Nộp bài') {
+                document.getElementById('submitStatus').innerText = "✅ Đã lưu kết quả thành công!";
+            }
+        }).catch(err => {
+            console.error("Lỗi gửi dữ liệu:", err);
+            if(action === 'Nộp bài') {
+                document.getElementById('submitStatus').innerText = "❌ Lỗi kết nối máy chủ!";
+            }
+        });
+    }
+
     function handleLogin(e) {
         e.preventDefault();
         state.name = document.getElementById('studentName').value;
@@ -424,7 +460,9 @@
         document.getElementById('displayID').innerText = state.id;
         state.startTime = new Date();
         setInterval(updateTimer, 1000);
-        logAction('Login', 'Success');
+        
+        // LOGGING: Đăng nhập
+        logAction('Đăng nhập', `Bắt đầu lúc ${state.startTime.toLocaleTimeString()}`);
     }
 
     function updateTimer() {
@@ -441,17 +479,6 @@
         document.getElementById(tabId).classList.add('active');
         document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         state.currentTab = tabId;
-        logAction('SwitchTab', tabId);
-    }
-
-    function logAction(action, detail) {
-        // Đã sửa: Loại bỏ điều kiện chặn 'AKfy' vì URL thật thường chứa chuỗi này
-        if(GOOGLE_SCRIPT_URL) {
-            const fd = new FormData();
-            fd.append("TenHocSinh", state.name); fd.append("ID", state.id);
-            fd.append("HanhDong", action); fd.append("ChiTiet", JSON.stringify(detail));
-            fetch(GOOGLE_SCRIPT_URL, {method:'POST', mode:'no-cors', body:fd}).catch(console.error);
-        }
     }
 
     // ==========================================
@@ -487,9 +514,8 @@
             v.className = 'virus-node';
             v.innerText = '🦠';
             
-            // Logic cho hình tròn: Random tọa độ cực (góc và bán kính)
             const angle = Math.random() * 2 * Math.PI;
-            const r = Math.sqrt(Math.random()) * 40; // Bán kính tối đa 40% (để ko bị ra ngoài)
+            const r = Math.sqrt(Math.random()) * 40; 
             const x = 50 + r * Math.cos(angle);
             const y = 50 + r * Math.sin(angle);
             
@@ -570,6 +596,9 @@
                 }]
             }
         });
+        
+        // LOGGING: Tính toán lây lan
+        logAction('Tính toán lây lan', `u1=${u1}, q=${q}, n=${n} -> Tổng=${total}`);
     }
 
     function completeTab2() {
@@ -616,18 +645,14 @@
                     { label: 'QG B (Có 5K)', data: dataB, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true }
                 ]
             },
-            // Sử dụng trục tuyến tính (linear) mặc định để thấy rõ độ cong
-            options: { 
-                scales: { 
-                    y: { 
-                        beginAtZero: true 
-                    } 
-                } 
-            }
+            options: { scales: { y: { beginAtZero: true } } }
         });
         
         document.getElementById('preventionConclusion').innerText = 
             `Nhận xét: Đường cong của QG A (màu đỏ) dốc lên rất nhanh theo cấp số mũ lớn. QG B (màu xanh) đã làm phẳng đường cong đáng kể nhờ 5K.`;
+            
+        // LOGGING: So sánh 5K
+        logAction('So sánh 5K', `Mức độ tuân thủ: ${val} (qB=${qB})`);
     }
 
     async function generateAiScenario() {
@@ -642,12 +667,9 @@
         
         try {
             const res = await callGeminiAPI("Tạo kịch bản lây nhiễm mới", systemPrompt);
-            // Clean up JSON response from Markdown if present
             const jsonStr = res.replace(/```json|```/g, '').trim();
-            // Find the JSON object part just in case
             const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
             const validJson = jsonMatch ? jsonMatch[0] : jsonStr;
-            
             const data = JSON.parse(validJson);
             document.getElementById('aiScenarioText').innerText = data.text;
             box.style.display = 'block';
@@ -667,7 +689,7 @@
     }
 
     // ==========================================
-    // TAB 4: VACCINE (UPDATED DETAILED)
+    // TAB 4: VACCINE
     // ==========================================
     function simulateVaccine() {
         let load = 1000000;
@@ -681,7 +703,6 @@
             load = load * 0.5; // q = 0.5
             labels.push(hours);
             data.push(load);
-            // Safety break
             if(hours > 50) break;
         }
         
@@ -689,7 +710,6 @@
             `✅ KẾT QUẢ: Sau <span style="font-size:1.5em; color:darkblue">${hours}</span> giờ, tải lượng virus giảm xuống còn ${Math.floor(load)}. <br>Hệ miễn dịch đã kiểm soát được tình hình!`;
         document.getElementById('vaccineResult').style.backgroundColor = '#dcfce7';
 
-        // Draw Chart
         const ctx = document.getElementById('vaccineChart').getContext('2d');
         if(charts.vaccine) charts.vaccine.destroy();
         charts.vaccine = new Chart(ctx, {
@@ -722,6 +742,9 @@
                 }
             }
         });
+        
+        // LOGGING: Vaccine
+        logAction('Mô phỏng Vaccine', `Hoàn thành sau ${hours} giờ`);
     }
 
     function completeTab4() {
@@ -731,7 +754,7 @@
     }
 
     // ==========================================
-    // TAB 5: NIPAH (UPDATED INLINE)
+    // TAB 5: NIPAH
     // ==========================================
     function checkNipah(choice) {
         const divSuccess = document.getElementById('nipahResultSuccess');
@@ -744,8 +767,12 @@
             divSuccess.style.display = 'block';
             state.tabsDone.t5 = true;
             document.querySelector('[data-tab="tab5"]').classList.add('completed');
+            // LOGGING: Nipah Đúng
+            logAction('Trả lời câu hỏi Nipah', 'Đúng (Chọn Có)');
         } else {
             divError.style.display = 'block';
+            // LOGGING: Nipah Sai
+            logAction('Trả lời câu hỏi Nipah', 'Sai (Chọn Không)');
         }
     }
 
@@ -756,8 +783,16 @@
         document.getElementById('mainApp').style.display = 'none';
         document.getElementById('completionBanner').style.display = 'block';
         
+        // Tính tổng thời gian
         const diff = Math.floor((new Date() - state.startTime)/1000);
-        document.getElementById('totalTimeCompleted').innerText = `${Math.floor(diff/60)} phút ${diff%60} giây`;
+        const minutes = Math.floor(diff/60);
+        const seconds = diff%60;
+        const timeString = `${minutes} phút ${seconds} giây`;
+        
+        document.getElementById('totalTimeCompleted').innerText = timeString;
+        
+        // LOGGING: Nộp bài cuối cùng
+        logAction('Nộp bài', 'Đã hoàn thành toàn bộ chương trình', timeString);
     }
     
     function restartLesson() { location.reload(); }
@@ -770,14 +805,11 @@
         el.style.display = el.style.display==='flex' ? 'none' : 'flex';
     }
     
-    // Hàm Mock API (Trả lời giả lập)
     function callGeminiAPI(prompt, systemInstruction) {
         return new Promise(resolve => {
             setTimeout(() => {
                 const lowerPrompt = prompt.toLowerCase();
                 let reply = "";
-
-                // Logic 1: Tạo kịch bản (Scenario)
                 if (lowerPrompt.includes("kịch bản") || lowerPrompt.includes("tình huống") || lowerPrompt.includes("lây nhiễm")) {
                     const scenarios = [
                         `{ "text": "Trong một buổi họp kín, 1 người F0 lây cho 2 người khác sau mỗi 30 phút. Tính số người nhiễm sau 2 giờ (4 chu kỳ)." }`,
@@ -785,24 +817,20 @@
                         `{ "text": "Một ổ dịch trong khu công nghiệp: F0 ban đầu là 1 người, mỗi ngày lây cho 3 người khác. Tính tổng số ca sau 1 tuần làm việc." }`
                     ];
                     reply = scenarios[Math.floor(Math.random() * scenarios.length)];
-                } 
-                // Logic 2: Chat thông thường
-                else {
+                } else {
                     const chatResponses = [
                         "🤖 Dr. GeoBot: **R0 (Hệ số lây nhiễm cơ bản)** là số người trung bình mà một F0 lây bệnh. Nếu R0 > 1, dịch bệnh sẽ bùng phát theo cấp số nhân!",
                         "🤖 Dr. GeoBot: **Miễn dịch cộng đồng** đạt được khi đủ số người có kháng thể (do tiêm vắc-xin hoặc từng mắc bệnh), khiến virus không còn người để lây nhiễm (cắt đứt chuỗi u_n).",
                         "🤖 Dr. GeoBot: Toán học rất quan trọng! Công thức **S_n** giúp các nhà dịch tễ dự báo số giường bệnh cần thiết cho tương lai.",
                         "🤖 Dr. GeoBot: Bạn có biết? **Vắc-xin** giúp biến cấp số nhân tăng dần (bùng dịch) thành cấp số nhân lùi vô hạn (dập dịch) đấy! 📉"
                     ];
-                    // Chọn câu trả lời ngẫu nhiên hoặc dựa trên từ khóa đơn giản
                     if(lowerPrompt.includes("r0")) reply = chatResponses[0];
                     else if(lowerPrompt.includes("miễn dịch")) reply = chatResponses[1];
                     else if(lowerPrompt.includes("vắc") || lowerPrompt.includes("vaccine")) reply = chatResponses[3];
                     else reply = chatResponses[Math.floor(Math.random() * chatResponses.length)];
                 }
-
                 resolve(reply);
-            }, 1000); // Giả lập độ trễ mạng 1 giây
+            }, 1000);
         });
     }
     
@@ -818,13 +846,11 @@
         inp.value = '';
         
         document.getElementById('typingIndicator').style.display='block';
-        
-        const systemPrompt = "MOCK SYSTEM PROMPT"; // Không dùng trong chế độ Mock
+        const systemPrompt = "MOCK SYSTEM PROMPT";
         
         try {
             const reply = await callGeminiAPI(txt, systemPrompt);
             document.getElementById('typingIndicator').style.display='none';
-            // Chuyển đổi Markdown cơ bản sang HTML (nếu có)
             const formattedReply = reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
             body.innerHTML += `<div class="msg bot-msg">${formattedReply}</div>`;
             body.scrollTop = body.scrollHeight;
