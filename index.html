@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Liệu Số: Toán Học & Đại Dịch (Pandemic Explorer)</title>
+    <title>Digital Learning: Math & Pandemics (Pandemic Explorer)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
     <style>
-        /* THEME COVID-19: Xanh Y Tế, Đỏ Cảnh Báo, Tối Hiện Đại */
+        /* THEME COVID-19: Medical Blue, Warning Red, Modern Dark */
         :root { 
             --primary: #0ea5e9; /* Sky Blue */
             --primary-dark: #0284c7;
@@ -22,13 +22,17 @@
         
         /* LOGIN & LAYOUT */
         .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(5px); }
-        .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 400px; width: 90%; text-align: center; border-top: 5px solid var(--danger); }
+        .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 500px; width: 90%; text-align: center; border-top: 5px solid var(--danger); }
         .login-box h2 { color: var(--danger); margin-bottom: 10px; font-size: 1.8em; }
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
         .form-group input { width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-        .login-btn { width: 100%; padding: 14px; background: var(--danger); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .login-btn:hover { background: #dc2626; }
+        
+        .login-btn-option { width: 100%; padding: 15px; border: 2px solid transparent; border-radius: 12px; font-size: 15px; font-weight: normal; cursor: pointer; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 15px; line-height: 1.4; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .option-home { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+        .option-home:hover { background: #bae6fd; transform: translateY(-2px); }
+        .option-class { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+        .option-class:hover { background: #fecaca; transform: translateY(-2px); }
 
         .app-container { max-width: 1200px; margin: 0 auto; background: var(--card-bg); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; min-height: 85vh; display: flex; flex-direction: column; border: 1px solid #e2e8f0; }
         
@@ -56,17 +60,16 @@
         .btn-success { background: var(--success); } .btn-success:hover { background: #059669; }
         .btn-ai { background: linear-gradient(45deg, #8b5cf6, #d946ef); color: white; }
         
-        /* TAB 1: VIRUS VISUALIZER (UPDATED CIRCLE) */
+        /* TAB 1: VIRUS VISUALIZER */
         .control-bar { background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
         .input-wrap label { display: block; font-size: 0.9em; color: #64748b; margin-bottom: 4px; }
         .input-wrap input, .input-wrap select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
         
         .simulation-area { display: flex; gap: 20px; height: 500px; }
-        /* Cập nhật: Hình tròn kính hiển vi */
         .host-cell { 
             flex: 1; 
             background: #1e1e1e; 
-            border-radius: 50%; /* Hình tròn */
+            border-radius: 50%; 
             position: relative; 
             overflow: hidden; 
             border: 8px solid #334155; 
@@ -74,12 +77,11 @@
             display: flex; 
             align-items: center; 
             justify-content: center;
-            aspect-ratio: 1/1; /* Giữ tỉ lệ vuông để tròn đều */
+            aspect-ratio: 1/1; 
             max-height: 500px;
         }
-        .host-cell::before { content: 'Tế Bào Vật Chủ (Kính hiển vi)'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #64748b; font-weight: bold; opacity: 0.5; font-size: 0.8em; z-index: 10; }
+        .host-cell::before { content: 'Host Cell (Microscope)'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #64748b; font-weight: bold; opacity: 0.5; font-size: 0.8em; z-index: 10; }
         
-        /* Virus Styling */
         .virus-node { position: absolute; font-size: 20px; animation: float 3s infinite ease-in-out; user-select: none; }
         @keyframes float { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(5px, -5px) rotate(10deg); } }
         
@@ -91,7 +93,7 @@
         th { background: #f8fafc; color: #475569; position: sticky; top: 0; }
         .highlight-row { background: #fef2f2; color: var(--danger); font-weight: bold; }
 
-        /* TAB 2 & 3: GRIDS & CARDS */
+        /* GRIDS & CARDS */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .info-card { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .formula-box { background: #fff1f2; border: 1px dashed var(--danger); padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Times New Roman', serif; font-size: 1.2em; text-align: center; color: #881337; }
@@ -131,18 +133,27 @@
 <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
         <div style="font-size: 50px; margin-bottom: 10px;">🦠</div>
-        <h2>TRẠM KIỂM SOÁT DỊCH BỆNH</h2>
-        <p style="color: #64748b; margin-bottom: 25px;">Nhập thông tin nghiên cứu viên để truy cập dữ liệu.</p>
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <h2>DISEASE CONTROL STATION</h2>
+        <p style="color: #64748b; margin-bottom: 25px;">Enter your information to access the system.</p>
+        <form id="loginForm">
             <div class="form-group">
-                <label>Họ và Tên</label>
-                <input type="text" id="studentName" placeholder="Ví dụ: Nguyễn Văn A" required>
+                <label>Full Name</label>
+                <input type="text" id="studentName" placeholder="e.g., John Doe" required>
             </div>
             <div class="form-group">
-                <label>Mã Định Danh (ID)</label>
-                <input type="text" id="studentID" placeholder="Ví dụ: HS001" required>
+                <label>Identification Code (ID)</label>
+                <input type="text" id="studentID" placeholder="e.g., STU001" required>
             </div>
-            <button type="submit" class="login-btn">TRUY CẬP HỆ THỐNG</button>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 25px;">
+                <button type="button" class="login-btn-option option-home" onclick="handleLogin(1)">
+                    <span style="font-size: 24px;">🏠</span> 
+                    <span>You are a <b>researcher</b>, click here to conduct studies</span>
+                </button>
+                <button type="button" class="login-btn-option option-class" onclick="handleLogin(2)">
+                    <span style="font-size: 24px;">⚔️</span> 
+                    <span>You are experienced, click here to <b>fight the pandemic</b></span>
+                </button>
+            </div>
         </form>
     </div>
 </div>
@@ -150,72 +161,71 @@
 <!-- USER BAR -->
 <div id="userInfoBar" class="user-info-bar" style="display: none;">
     <div class="user-details">
-        👨‍🔬 Nghiên cứu viên: <span id="displayName">---</span> | ID: <span id="displayID">---</span>
+        👨‍🔬 Role: <span id="displayMode">---</span> | Name: <span id="displayName">---</span> | ID: <span id="displayID">---</span>
     </div>
     <div class="session-time">
-        ⏱️ Thời gian phiên làm việc: <span id="sessionTimer">00:00</span>
+        ⏱️ Session time: <span id="sessionTimer">00:00</span>
     </div>
 </div>
 
 <!-- COMPLETION BANNER -->
 <div id="completionBanner" class="completion-banner">
     <div style="font-size: 40px; margin-bottom: 10px;">💉🎉</div>
-    <h2 style="justify-content: center; color: white; border: none; margin: 0;">NHIỆM VỤ HOÀN THÀNH!</h2>
-    <p>Bạn đã nắm vững kiến thức toán học để đẩy lùi dịch bệnh.</p>
-    <p>Tổng thời gian: <span id="totalTimeCompleted"></span></p>
-    <div id="submitStatus" style="margin-top: 10px; color: #ecfdf5; font-style: italic;">Đang gửi kết quả về máy chủ...</div>
-    <button onclick="restartLesson()" style="background: white; color: #059669; margin-top: 15px;">🔄 Nghiên cứu lại</button>
+    <h2 style="justify-content: center; color: white; border: none; margin: 0;">MISSION ACCOMPLISHED!</h2>
+    <p>You have successfully completed your research/combat progress.</p>
+    <p>Total time: <span id="totalTimeCompleted"></span></p>
+    <div id="submitStatus" style="margin-top: 10px; color: #ecfdf5; font-style: italic;">Sending results to server...</div>
+    <button onclick="restartLesson()" style="background: white; color: #059669; margin-top: 15px;">🔄 Start Over</button>
 </div>
 
 <!-- MAIN APP -->
 <div class="app-container" id="mainApp" style="display: none;">
     <div class="nav-tabs">
-        <div class="nav-item active" data-tab="tab1" onclick="switchTab('tab1')">PHẦN 1: VIRUS NHÂN LÊN</div>
-        <div class="nav-item" data-tab="tab2" onclick="switchTab('tab2')">PHẦN 2: LÂY LAN CỘNG ĐỒNG</div>
-        <div class="nav-item" data-tab="tab3" onclick="switchTab('tab3')">PHẦN 3: PHÒNG CHỐNG (5K)</div>
-        <div class="nav-item" data-tab="tab4" onclick="switchTab('tab4')">PHẦN 4: VẮC-XIN</div>
-        <div class="nav-item" data-tab="tab5" onclick="switchTab('tab5')">PHẦN 5: VIRUS NIPAH</div>
+        <div class="nav-item active" data-tab="tab1" onclick="switchTab('tab1')">PART 1: VIRAL REPLICATION</div>
+        <div class="nav-item" data-tab="tab2" onclick="switchTab('tab2')">PART 2: COMMUNITY SPREAD</div>
+        <div class="nav-item" data-tab="tab3" onclick="switchTab('tab3')">PART 3: PREVENTION (5K)</div>
+        <div class="nav-item" data-tab="tab4" onclick="switchTab('tab4')">PART 4: VACCINE</div>
+        <div class="nav-item" data-tab="tab5" onclick="switchTab('tab5')">PART 5: NIPAH VIRUS</div>
     </div>
 
-    <!-- TAB 1: VIRAL REPLICATION (UN) -->
+    <!-- TAB 1: VIRAL REPLICATION -->
     <div id="tab1" class="tab-content active">
-        <h2>🔬 Cơ chế: Virus nhân bản trong tế bào</h2>
+        <h2>🔬 Mechanism: Virus replication in cells</h2>
         <p style="color:#64748b; margin-bottom: 20px;">
-            Khi virus xâm nhập tế bào vật chủ, chúng chiếm quyền điều khiển và nhân bản theo cấp số nhân. 
-            Hãy giả lập quá trình này để tìm ra công thức tổng quát.
+            When viruses enter a host cell, they hijack its machinery and replicate exponentially. 
+            Let's simulate this process to find the general formula.
         </p>
 
         <div class="control-bar">
             <div class="input-wrap">
-                <label>Số virus ban đầu (<span class="math-symbol">u<sub>1</sub></span>)</label>
+                <label>Initial viruses (<span class="math-symbol">u<sub>1</sub></span>)</label>
                 <input type="number" id="t1_u1" value="1" min="1" max="5">
             </div>
             <div class="input-wrap">
-                <label>Hệ số nhân bản (<span class="math-symbol">q</span>)</label>
+                <label>Replication factor</label>
                 <select id="t1_q">
-                    <option value="2">Nhân đôi (q=2)</option>
-                    <option value="3">Nhân ba (q=3)</option>
-                    <option value="4">Nhân bốn (q=4)</option>
+                    <option value="2">Double</option>
+                    <option value="3">Triple</option>
+                    <option value="4">Quadruple</option>
                 </select>
             </div>
-            <button class="btn-danger" onclick="simulateReplication()">▶ BẮT ĐẦU CHU KỲ</button>
-            <button onclick="resetTab1()" style="background:#64748b">♻ Làm mới</button>
+            <button class="btn-danger" onclick="simulateReplication()">▶ START CYCLE</button>
+            <button onclick="resetTab1()" style="background:#64748b">♻ Reset</button>
         </div>
 
         <div class="simulation-area">
             <div class="host-cell" id="hostCell">
-                <!-- Viruses will appear here -->
-                <div style="color: #475569; text-align: center;">(Nhấn nút Bắt đầu để soi kính hiển vi)</div>
+                <div style="color: #475569; text-align: center;">(Press Start to view under microscope)</div>
             </div>
             <div class="data-table-container">
-                <h3>📋 Nhật ký theo dõi</h3>
+                <h3>📋 Observation Log</h3>
                 <div class="table-scroll">
                     <table id="replicationTable">
                         <thead>
                             <tr>
-                                <th>Chu kỳ (n)</th>
-                                <th>Số lượng (<span class="math-symbol">u<sub>n</sub></span>)</th>
-                                <th>Quy luật</th>
+                                <th>Cycle (n)</th>
+                                <th>Quantity (<span class="math-symbol">u<sub>n</sub></span>)</th>
+                                <th>Pattern</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -223,142 +233,209 @@
                 </div>
             </div>
         </div>
-        
-        <div class="formula-box" id="t1_conclusion" style="display:none">
-            💡 Công thức tổng quát: <span class="math-symbol">u<sub>n</sub> = u<sub>1</sub> × q<sup>n-1</sup></span>
-            <br><span style="font-size: 0.7em; color: #475569;">(Số virus ở chu kỳ n = Số ban đầu × Hệ số nhân mũ n-1)</span>
-        </div>
 
-        <!-- NEW EXERCISE SECTION -->
+        <!-- EXERCISE SECTION -->
         <div class="exercise-section">
             <div class="info-card" style="border-left: 5px solid var(--danger);">
-                <h3 style="color: var(--danger); margin-top: 0;">📚 Bài tập tình huống: COVID-19</h3>
+                <h3 style="color: var(--danger); margin-top: 0;">📚 Case Study: COVID-19</h3>
                 <p style="font-size: 0.95em; line-height: 1.6;">
-                    Virus corona gây hội chứng hô hấp cấp tính nặng 2, viết tắt là SARS-CoV-2, là một chủng coronavirus gây ra bệnh viêm đường hô hấp cấp do virus corona 2019 (COVID-19), xuất hiện lần đầu tiên vào tháng 12 năm 2019, trong đợt bùng phát đại dịch COVID-19 ở thành phố Vũ Hán, Trung Quốc và bắt đầu lây lan nhanh chóng, sau đó trở thành một đại dịch toàn cầu. 
-                    Khi virus SARS-CoV-2 xâm nhập vào một tế bào cơ thể, nó sử dụng bộ máy của tế bào để nhân bản. Giả sử trong một thí nghiệm kiểm soát, <strong>một con virus ban đầu sau mỗi chu kỳ nhân bản sẽ tạo ra thêm 2 con virus mới</strong> (tức tổng số tăng gấp 3 lần, hoặc giả sử đơn giản là nhân đôi tùy đề bài - <em>theo đề bài này ta hiểu là 1 thành 2, q=2</em>).
+                    Severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) is a strain of coronavirus that causes coronavirus disease 2019 (COVID-19). It first emerged in December 2019 in Wuhan, China, and quickly spread to become a global pandemic. 
+                    When SARS-CoV-2 enters a human cell, it uses the cell's machinery to replicate. Assume in a controlled experiment starting with <strong>1 initial virus</strong>, <strong>each virus creates 2 new viruses and is then destroyed after each replication cycle</strong>.
                 </p>
 
                 <div class="exercise-item">
-                    <strong>Câu 1: Giả sử ban đầu có 1 virus SARS-CoV-2 xâm nhập vào tế bào. Hãy tính số lượng virus trong 5 chu kì đầu (với q=2).</strong>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                        <input type="number" class="fill-blank" id="q1_1" placeholder="u1">
-                        <input type="number" class="fill-blank" id="q1_2" placeholder="u2">
-                        <input type="number" class="fill-blank" id="q1_3" placeholder="u3">
-                        <input type="number" class="fill-blank" id="q1_4" placeholder="u4">
-                        <input type="number" class="fill-blank" id="q1_5" placeholder="u5">
+                    <strong>Question 1: Based on the Case Study description, configure and run the simulation. Then, fill in the quantity of viruses (<span class="math-symbol">u</span>) at the corresponding cycles (<span class="math-symbol">n</span>):</strong>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; align-items: center;">
+                        <span><span class="math-symbol">u<sub>1</sub></span> = <input type="number" class="fill-blank" id="q1_1" style="width: 50px;"></span>
+                        <span><span class="math-symbol">u<sub>2</sub></span> = <input type="number" class="fill-blank" id="q1_2" style="width: 50px;"></span>
+                        <span><span class="math-symbol">u<sub>3</sub></span> = <input type="number" class="fill-blank" id="q1_3" style="width: 50px;"></span>
+                        <span><span class="math-symbol">u<sub>4</sub></span> = <input type="number" class="fill-blank" id="q1_4" style="width: 50px;"></span>
+                        <span><span class="math-symbol">u<sub>5</sub></span> = <input type="number" class="fill-blank" id="q1_5" style="width: 50px;"></span>
                     </div>
                 </div>
 
                 <div class="exercise-item">
-                    <strong>Câu 2: Hãy tính tỉ lệ giữa số lượng virus ở chu kì thứ n và thứ (n-1)?</strong>
-                    Trả lời: <input type="number" class="fill-blank" id="q2_val">
+                    <strong>Question 2: Perform division to calculate the ratio between the number of viruses in a cycle compared to the cycle immediately preceding it:</strong>
+                    <div style="line-height: 2; margin-top: 10px;">
+                        <span class="math-symbol">u<sub>2</sub> / u<sub>1</sub></span> = <input type="number" class="fill-blank" id="q2_1" style="width: 50px;"> &nbsp;&nbsp;&nbsp;
+                        <span class="math-symbol">u<sub>3</sub> / u<sub>2</sub></span> = <input type="number" class="fill-blank" id="q2_2" style="width: 50px;"> &nbsp;&nbsp;&nbsp;
+                        <span class="math-symbol">u<sub>4</sub> / u<sub>3</sub></span> = <input type="number" class="fill-blank" id="q2_3" style="width: 50px;">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        Observation: These ratios have values that are 
+                        <select id="q2_4" style="padding: 5px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold; color: var(--primary); outline: none;">
+                            <option value="">-- Select --</option>
+                            <option value="Equal">Equal</option>
+                            <option value="Different">Different</option>
+                        </select>.
+                    </div>
                 </div>
 
                 <div class="exercise-item">
-                    <strong>Câu 3: Gọi u<sub>n</sub> là số lượng virus trong n chu kỳ. Dự đoán công thức liên hệ giữa n và (n-1)?</strong>
-                    Trả lời: <input type="text" class="fill-blank" id="q3_val" style="width: 200px;" placeholder="Ví dụ: un = ...">
+                    <strong>Question 3: Based on your observations in Questions 1 and 2, fill in the blanks to complete the formal mathematical definition:</strong>
+                    <div style="line-height: 2; padding: 15px; background: #fff; border: 1px dashed var(--primary); border-radius: 8px;">
+                        A <span style="font-weight: bold; color: var(--primary-dark);">Geometric Sequence (Geometric Progression)</span> is a sequence (finite or infinite) in which, starting from the second term, each term is the 
+                        <select id="q3_1" class="fill-blank" style="width: auto; padding: 2px;">
+                            <option value="">-- select --</option>
+                            <option value="sum">sum</option>
+                            <option value="product">product</option>
+                        </select>
+                        of the immediately preceding term and a 
+                        <select id="q3_2" class="fill-blank" style="width: auto; padding: 2px;">
+                            <option value="">-- select --</option>
+                            <option value="constant">constant</option>
+                            <option value="variable">variable</option>
+                        </select>
+                        number <span class="math-symbol">q</span>.<br>
+                        The number <span class="math-symbol">q</span> is called the <span style="font-weight: bold; color: var(--primary-dark);">common ratio</span> of the geometric sequence.
+                    </div>
+                    <div style="margin-top: 15px;">
+                        In our virus simulation, the "replication factor" plays the role of this common ratio. Therefore, in the simulation you just ran, the common ratio <span class="math-symbol">q</span> = <input type="number" class="fill-blank" id="q3_3" style="width: 60px;">.
+                    </div>
                 </div>
 
                 <div class="exercise-item">
-                    <strong>Câu 4: Thực tế, 1 tế bào nhiễm 1 virus có thể tạo ra 1000 virus mới. Hãy cho biết công thức liên hệ lúc này?</strong>
-                    Trả lời: <input type="text" class="fill-blank" id="q4_val" style="width: 200px;">
+                    <strong>Question 4: Translate the definition of a geometric sequence into a mathematical formula. Express the relationship between the <span class="math-symbol">n</span>-th term (<span class="math-symbol">u<sub>n</sub></span>), its preceding term (<span class="math-symbol">u<sub>n-1</sub></span>), and the common ratio <span class="math-symbol">q</span>:</strong>
+                    <div style="margin-top: 10px; font-size: 1.1em; display: flex; align-items: center; gap: 10px;">
+                        <span class="math-symbol">u<sub>n</sub> = u<sub>n-1</sub></span> 
+                        <select id="q4_op" class="fill-blank" style="width: 50px; padding: 2px; font-size: 1em;">
+                            <option value="">?</option>
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                            <option value="*">&times;</option>
+                            <option value="/">/</option>
+                        </select>
+                        <input type="text" class="fill-blank" id="q4_1" style="width: 60px; font-style: italic;" placeholder="?">
+                    </div>
                 </div>
 
                 <div class="exercise-item">
-                    <strong>Câu 5: Điền vào chỗ trống:</strong>
-                    <p>Ta thấy số lượng virus SARS-CoV-2 trong các chu kì nhân bản sẽ tạo thành một <input type="text" class="fill-blank" id="q5_1" style="width:150px">, trong đó kể từ số hạng thứ hai, mỗi số hạng đều là tích của số hạng đứng ngay trước nó với <input type="text" class="fill-blank" id="q5_2" style="width:150px">.</p>
+                    <strong>Question 5: In reality, we cannot calculate cycle by cycle forever. Let's try expressing any term solely based on <span class="math-symbol">u<sub>1</sub></span> and <span class="math-symbol">q</span>:</strong>
+                    <div style="line-height: 2; margin-top: 10px; padding-left: 15px; border-left: 3px solid #cbd5e1;">
+                        We have: <span class="math-symbol">u<sub>2</sub> = u<sub>1</sub> &times; q</span><br>
+                        <span class="math-symbol">u<sub>3</sub> = u<sub>2</sub> &times; q = (u<sub>1</sub> &times; q) &times; q = u<sub>1</sub> &times; q<sup>2</sup></span><br>
+                        <span class="math-symbol">u<sub>4</sub> = u<sub>3</sub> &times; q = (u<sub>1</sub> &times; q<sup>2</sup>) &times; q = u<sub>1</sub> &times; q<sup>3</sup></span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        Look closely: The exponent of <span class="math-symbol">q</span> is always 
+                        <select id="q5_1" style="padding: 5px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold; color: var(--primary); outline: none;">
+                            <option value="">-- Select --</option>
+                            <option value="Greater">Greater than</option>
+                            <option value="Smaller">Smaller than</option>
+                            <option value="Equal">Equal to</option>
+                        </select>
+                        the index of <span class="math-symbol">u</span> by exactly <input type="number" class="fill-blank" id="q5_diff" style="width: 40px; padding: 0;"> unit(s).
+                    </div>
+                    <div style="margin-top: 10px;">
+                        Predict: <span class="math-symbol">u<sub>10</sub> = u<sub>1</sub> &times; q</span><sup><input type="number" class="fill-blank" id="q5_2" style="width: 40px; padding: 0;"></sup>
+                    </div>
                 </div>
 
                 <div class="exercise-item">
-                    <strong>Câu 6: Công bội q của cấp số nhân ở câu 3 và 4 lần lượt là:</strong>
-                    q3 = <input type="number" class="fill-blank" id="q6_1"> và q4 = <input type="number" class="fill-blank" id="q6_2">
+                    <strong>Question 6: From the pattern above, the <span class="math-symbol">n</span>-th term (<span class="math-symbol">u<sub>n</sub></span>) of a geometric sequence can be calculated using the first term (<span class="math-symbol">u<sub>1</sub></span>) and the common ratio <span class="math-symbol">q</span> with which formula?</strong>
+                    <div style="margin-top: 10px;">
+                        <label class="radio-option"><input type="radio" name="mcq_formula" value="A"> A. <span class="math-symbol">u<sub>n</sub> = u<sub>1</sub> &times; q<sup>n</sup></span></label>
+                        <label class="radio-option"><input type="radio" name="mcq_formula" value="B"> B. <span class="math-symbol">u<sub>n</sub> = u<sub>1</sub> &times; q<sup>n-1</sup></span></label>
+                        <label class="radio-option"><input type="radio" name="mcq_formula" value="C"> C. <span class="math-symbol">u<sub>n</sub> = u<sub>1</sub> &times; q<sup>n+1</sup></span></label>
+                    </div>
                 </div>
 
-                <div class="exercise-item">
-                    <strong>Câu hỏi trắc nghiệm: Cấp số nhân (u<sub>n</sub>) với công bội q được cho bởi hệ thức truy hồi nào?</strong>
-                    <label class="radio-option"><input type="radio" name="mcq_formula" value="A"> A. u<sub>n</sub> = u<sub>n-1</sub> . q (n ≥ 2)</label>
-                    <label class="radio-option"><input type="radio" name="mcq_formula" value="B"> B. u<sub>n</sub> = u<sub>n-1</sub> / q (n ≥ 2)</label>
-                </div>
-
-                <button class="btn-primary" onclick="checkExerciseTab1()" style="width: 100%;">📤 GỬI BÀI LÀM</button>
+                <button class="btn-primary" onclick="checkExerciseTab1()" style="width: 100%;">📤 SUBMIT EXERCISE</button>
                 <div id="ex_result_tab1" class="inline-alert" style="margin-top: 15px;"></div>
+                
+                <!-- CONCLUSION BOX (Hidden until submission) -->
+                <div class="formula-box" id="t1_conclusion" style="display:none; margin-top: 25px; border: 2px solid var(--primary); background: #f0f9ff; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);">
+                    <div style="font-size: 1.3em; margin-bottom: 10px; color: var(--primary-dark);">🌟 <strong>AWESOME! YOU FOUND THE PATTERN</strong></div>
+                    <p style="font-size: 1em; line-height: 1.6; color: #334155; margin-bottom: 20px;">
+                        Through simulation and calculations, you have discovered a special sequence in mathematics called a <strong>Geometric Sequence</strong>. 
+                        Starting from the second term, each term is equal to the immediately preceding term multiplied by a constant number <span class="math-symbol">q</span> (called the <strong>common ratio</strong>).
+                    </p>
+                    <div style="background: white; padding: 20px; border-radius: 12px; border: 2px dashed var(--danger); display: inline-block;">
+                        <div style="color: #64748b; margin-bottom: 10px; font-weight: bold;">GENERAL FORMULA</div>
+                        <span class="math-symbol" style="font-size: 2em; color: var(--danger);">u<sub>n</sub> = u<sub>1</sub> × q<sup>n-1</sup></span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #64748b; margin-top: 15px;">
+                        (Number of viruses at cycle n = Initial quantity × Replication factor to the power of n-1)
+                    </p>
+                </div>
+                
             </div>
         </div>
 
-        <button class="btn-primary" onclick="completeTab1()" style="float: right; margin-top: 20px;">Hoàn thành Phần 1 →</button>
+        <button id="btn-next-t1" class="btn-primary" onclick="completeTab1()" style="float: right; margin-top: 20px;">Complete Part 1 →</button>
     </div>
 
-    <!-- TAB 2: COMMUNITY SPREAD (SN) -->
+    <!-- TAB 2: COMMUNITY SPREAD -->
     <div id="tab2" class="tab-content">
-        <h2>🌍 Lây lan: Tổng số ca nhiễm cộng đồng</h2>
+        <h2>🌍 Spread: Total community infections</h2>
         <div class="grid-2">
             <div class="info-card">
-                <h3>📊 Dữ liệu dịch tễ</h3>
-                <p>Một người nhiễm bệnh (F0) có thể lây cho nhiều người khác (<span class="math-symbol">R<sub>0</sub></span> hay chính là <span class="math-symbol">q</span>). Hãy tính tổng số người bị lây nhiễm sau một chuỗi lây lan.</p>
+                <h3>📊 Epidemiological Data</h3>
+                <p>One infected person (Patient Zero / F0) can infect multiple others (<span class="math-symbol">R<sub>0</sub></span> or <span class="math-symbol">q</span>). Calculate the total number of infected people after a transmission chain.</p>
                 
                 <div class="input-wrap" style="margin-top: 15px;">
-                    <label>Số F0 ban đầu (<span class="math-symbol">u<sub>1</sub></span>):</label>
+                    <label>Initial Patient Zeros (<span class="math-symbol">u<sub>1</sub></span>):</label>
                     <input type="number" id="t2_u1" value="1" class="w-full">
                 </div>
                 <div class="input-wrap" style="margin-top: 10px;">
-                    <label>Hệ số lây nhiễm (<span class="math-symbol">R<sub>0</sub> = q</span>):</label>
+                    <label>Infection rate (<span class="math-symbol">R<sub>0</sub> = q</span>):</label>
                     <input type="number" id="t2_q" value="3" step="0.5">
-                    <small style="color:var(--danger)">Lưu ý: Biến chủng Delta/Omicron có R0 rất cao (5-10).</small>
+                    <small style="color:var(--danger)">Note: Delta/Omicron variants have a very high R0 (5-10).</small>
                 </div>
                 <div class="input-wrap" style="margin-top: 10px;">
-                    <label>Số chu kỳ lây nhiễm (<span class="math-symbol">n</span>):</label>
+                    <label>Transmission cycles (<span class="math-symbol">n</span>):</label>
                     <input type="number" id="t2_n" value="5">
                 </div>
                 
-                <button class="btn-danger" style="width: 100%; margin-top: 20px;" onclick="calcSpread()">⚠️ TÍNH TỔNG SỐ CA NHIỄM</button>
+                <button class="btn-danger" style="width: 100%; margin-top: 20px;" onclick="calcSpread()">⚠️ CALCULATE TOTAL INFECTIONS</button>
             </div>
             
             <div class="info-card" style="background: #fff7ed;">
-                <h3>📉 Kết quả dự báo</h3>
+                <h3>📉 Forecast Results</h3>
                 <div id="t2_result" style="text-align: center; margin-top: 30px; display: none;">
                     <div style="font-size: 3em; font-weight: bold; color: var(--danger);" id="totalInfected">0</div>
-                    <p>Người nhiễm bệnh</p>
+                    <p>Infected people</p>
                     <div class="formula-box" style="background: white; border-color: orange; color: #c2410c;">
-                        Tổng <span class="math-symbol">S<sub>n</sub> = <frac>u<sub>1</sub>(q<sup>n</sup> - 1)</frac> / <frac>(q - 1)</frac></span>
+                        Sum <span class="math-symbol">S<sub>n</sub> = <frac>u<sub>1</sub>(q<sup>n</sup> - 1)</frac> / <frac>(q - 1)</frac></span>
                     </div>
                 </div>
                 <canvas id="spreadChart" style="margin-top: 20px; max-height: 200px;"></canvas>
             </div>
         </div>
-        <button class="btn-primary" onclick="completeTab2()" style="float: right; margin-top: 20px;">Hoàn thành Phần 2 →</button>
+        <button id="btn-next-t2" class="btn-primary" onclick="completeTab2()" style="float: right; margin-top: 20px;">Complete Part 2 →</button>
     </div>
 
     <!-- TAB 3: PREVENTION (5K) -->
     <div id="tab3" class="tab-content">
-        <h2>🛡️ Phòng chống: Tác động của 5K</h2>
-        <p>So sánh tốc độ lây lan giữa hai quốc gia: Một bên thả lỏng và một bên áp dụng 5K (Khẩu trang, Khử khuẩn, Khoảng cách, Không tụ tập, Khai báo).</p>
+        <h2>🛡️ Prevention: Impact of Safety Measures</h2>
+        <p>Compare the spread rate between two countries: One is relaxed, and the other rigorously applies safety measures (Masks, Disinfection, Distance, No Gatherings, Health Declaration).</p>
         
         <div class="grid-2">
             <div class="info-card">
-                <h3>Cấu hình kịch bản</h3>
+                <h3>Scenario Configuration</h3>
                 
                 <div style="margin-bottom: 20px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
-                    <strong style="color: var(--danger)">Quốc gia A (Chủ quan):</strong>
-                    <div class="input-wrap">Hệ số lây <span class="math-symbol">q<sub>A</sub></span> = 5 (Rất nhanh)</div>
+                    <strong style="color: var(--danger)">Country A (Relaxed):</strong>
+                    <div class="input-wrap">Infection Rate <span class="math-symbol">q<sub>A</sub></span> = 5 (Very fast)</div>
                 </div>
 
                 <div>
-                    <strong style="color: var(--success)">Quốc gia B (Áp dụng 5K):</strong>
+                    <strong style="color: var(--success)">Country B (Applies Measures):</strong>
                     <div class="input-wrap">
-                        <label>Mức độ tuân thủ 5K:</label>
+                        <label>Compliance level:</label>
                         <input type="range" id="complianceLevel" min="1" max="4" value="2" style="width: 100%" oninput="updateComplianceLabel()">
-                        <div id="complianceLabel" style="text-align: center; font-weight: bold; color: var(--success)">Tuân thủ Khá (<span class="math-symbol">q<sub>B</sub></span> = 2)</div>
+                        <div id="complianceLabel" style="text-align: center; font-weight: bold; color: var(--success)">Good Compliance (<span class="math-symbol">q<sub>B</sub></span> = 2)</div>
                     </div>
                 </div>
 
-                <button class="btn-success" style="width: 100%; margin-top: 20px;" onclick="comparePrevention()">⚖️ SO SÁNH HIỆU QUẢ</button>
+                <button class="btn-success" style="width: 100%; margin-top: 20px;" onclick="comparePrevention()">⚖️ COMPARE EFFECTIVENESS</button>
                 
                 <!-- AI SCENARIO GENERATOR -->
                 <button id="btnAiScenario" class="btn-ai" style="width:100%; margin-top:15px;" onclick="generateAiScenario()">
-                    ✨ AI: Tạo tình huống dịch tễ mới
+                    ✨ AI: Generate new epidemiological scenario
                 </button>
                 <div id="aiScenarioBox" style="display:none; margin-top:10px; padding:10px; background:#f0fdf4; border-radius:8px; font-size:0.9em; border:1px solid #bbf7d0;">
-                    <strong style="color:#15803d">🤖 Tình huống:</strong> <span id="aiScenarioText"></span>
+                    <strong style="color:#15803d">🤖 Scenario:</strong> <span id="aiScenarioText"></span>
                 </div>
             </div>
 
@@ -367,73 +444,73 @@
                 <div id="preventionConclusion" style="margin-top: 15px; font-size: 0.9em; font-style: italic;"></div>
             </div>
         </div>
-        <button class="btn-primary" onclick="completeTab3()" style="float: right; margin-top: 20px;">Hoàn thành Phần 3 →</button>
+        <button id="btn-next-t3" class="btn-primary" onclick="completeTab3()" style="float: right; margin-top: 20px;">Complete Part 3 →</button>
     </div>
 
-    <!-- TAB 4: VACCINATION (NEW SPLIT) -->
+    <!-- TAB 4: VACCINATION -->
     <div id="tab4" class="tab-content">
-        <h2>💉 Hiệu quả Vắc-xin & Miễn dịch</h2>
+        <h2>💉 Vaccine Effectiveness & Immunity</h2>
         <div class="grid-2">
             <div class="info-card">
-                <h3>Mô hình suy giảm virus (Cấp số nhân lùi)</h3>
-                <p>Sau khi tiêm vắc-xin, hệ miễn dịch được "tập trận". Khi virus xâm nhập, kháng thể sẽ tiêu diệt chúng nhanh chóng.</p>
-                <p>Giả sử cứ sau mỗi giờ, lượng virus giảm đi một nửa (<span class="math-symbol">q = 0.5</span>).</p>
+                <h3>Viral decay model (Decreasing geometric sequence)</h3>
+                <p>After vaccination, the immune system is "trained". When the virus enters, antibodies destroy them quickly.</p>
+                <p>Assume every hour, the viral load is halved (<span class="math-symbol">q = 0.5</span>).</p>
                 
                 <div class="input-wrap" style="margin-top: 15px; background: #f0f9ff; padding: 15px; border-radius: 8px;">
-                    <label>Tải lượng virus ban đầu:</label>
+                    <label>Initial viral load:</label>
                     <input type="number" id="t4_load" value="1000000" disabled style="background:#e2e8f0; color: #64748b; font-weight: bold;">
                 </div>
                 
                 <div class="input-wrap" style="margin-top: 10px; background: #ecfdf5; padding: 15px; border-radius: 8px; border: 1px solid #a7f3d0;">
-                    <label style="color: #047857">🛡️ Ngưỡng an toàn của hệ miễn dịch:</label>
-                    <div style="font-weight: bold; color: #059669">Dưới 100 virus</div>
-                    <small>Khi tải lượng xuống dưới mức này, cơ thể hoàn toàn kiểm soát được bệnh.</small>
+                    <label style="color: #047857">🛡️ Immune system safe threshold:</label>
+                    <div style="font-weight: bold; color: #059669">Under 100 viruses</div>
+                    <small>When the viral load drops below this level, the body completely controls the disease.</small>
                 </div>
 
-                <button class="btn-primary" onclick="simulateVaccine()" style="width:100%; margin-top:20px">📉 MÔ PHỎNG QUÁ TRÌNH TIÊU DIỆT</button>
+                <button class="btn-primary" onclick="simulateVaccine()" style="width:100%; margin-top:20px">📉 SIMULATE DESTRUCTION PROCESS</button>
             </div>
 
             <div class="info-card">
-                <h3>Biểu đồ tải lượng virus</h3>
+                <h3>Viral Load Chart</h3>
                 <canvas id="vaccineChart" style="max-height: 250px;"></canvas>
                 <div id="vaccineResult" style="margin-top: 15px; font-weight: bold; color: var(--success); padding: 10px; border-radius: 8px;"></div>
             </div>
         </div>
-        <button class="btn-primary" onclick="completeTab4()" style="float: right; margin-top: 20px;">Hoàn thành Phần 4 →</button>
+        <button id="btn-next-t4" class="btn-primary" onclick="completeTab4()" style="float: right; margin-top: 20px;">Complete Part 4 →</button>
     </div>
 
-    <!-- TAB 5: NIPAH (NEW SPLIT) -->
+    <!-- TAB 5: NIPAH -->
     <div id="tab5" class="tab-content">
-        <h2>🦇 Thách thức tương lai: Virus Nipah</h2>
+        <h2>🦇 Future Challenge: Nipah Virus</h2>
         <div class="info-card" style="background: #fff1f2; border-color: #fecaca; max-width: 800px; margin: 0 auto;">
-            <h3>⚠️ Cảnh báo dịch tễ</h3>
-            <p>Nipah là loại virus lây từ dơi sang người với tỉ lệ tử vong cao (40-75%).</p>
+            <h3>⚠️ Epidemiological Warning</h3>
+            <p>Nipah is a virus transmitted from bats to humans with a high mortality rate (40-75%).</p>
             <p style="font-size: 1.1em; line-height: 1.6;">
-                <b>Bài toán nghiên cứu:</b> Giả sử tại một ngôi làng, cứ 1 người nhiễm Nipah sẽ lây cho 2 người khác (<span class="math-symbol">q=2</span>). 
-                Nếu không cách ly, sau 10 chu kỳ lây nhiễm, ngôi làng <b>500 người</b> có bị nhiễm hết không?
+                <b>Research problem:</b> Assume in a village, every 1 Nipah-infected person infects 2 others (<span class="math-symbol">q=2</span>). 
+                If not isolated, after 10 transmission cycles, will the entire village of <b>500 people</b> be infected?
             </p>
             
             <div style="margin-top: 25px; display: flex; gap: 15px; justify-content: center;">
-                <button onclick="checkNipah(true)" class="btn-danger" style="padding: 15px 30px; font-size: 1.1em;">CÓ, bị nhiễm hết</button>
-                <button onclick="checkNipah(false)" style="padding: 15px 30px; font-size: 1.1em; background: #94a3b8;">KHÔNG</button>
+                <button onclick="checkNipah(true)" class="btn-danger" style="padding: 15px 30px; font-size: 1.1em;">YES, fully infected</button>
+                <button onclick="checkNipah(false)" style="padding: 15px 30px; font-size: 1.1em; background: #94a3b8;">NO</button>
             </div>
 
             <!-- Inline Result Display -->
             <div id="nipahResultSuccess" class="inline-alert alert-success">
-                ✅ CHÍNH XÁC! <br>
-                Tổng số ca nhiễm là <b>1,023</b> người (theo công thức tổng cấp số nhân). <br>
-                Con số này lớn hơn dân số 500 người của làng -> Cả làng đều bị nhiễm.
+                ✅ CORRECT! <br>
+                The total number of infections is <b>1,023</b> people (using the geometric sequence sum formula). <br>
+                This number is larger than the 500 population of the village -> The entire village is infected.
             </div>
             <div id="nipahResultError" class="inline-alert alert-error">
-                ❌ SAI RỒI. <br>
-                Hãy tính tổng <span class="math-symbol">S<sub>10</sub></span> với <span class="math-symbol">u<sub>1</sub>=1, q=2</span>. <br>
-                Kết quả là 1023, lớn hơn nhiều so với 500 người dân.
+                ❌ INCORRECT. <br>
+                Calculate the sum <span class="math-symbol">S<sub>10</sub></span> with <span class="math-symbol">u<sub>1</sub>=1, q=2</span>. <br>
+                The result is 1023, which is much larger than the 500 population.
             </div>
         </div>
 
         <div style="text-align: center; margin-top: 40px;">
             <button class="btn-success" onclick="finishAll()" style="font-size: 1.2em; padding: 15px 40px; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);">
-                🏆 HOÀN THÀNH CHƯƠNG TRÌNH
+                🏆 COMPLETE PROGRAM
             </button>
         </div>
     </div>
@@ -443,16 +520,16 @@
 <div class="chat-btn" onclick="toggleChat()">💬</div>
 <div id="chatWindow" class="chat-window">
     <div class="chat-header">
-        <span>🤖 Dr. GeoBot (Chuyên gia Dịch tễ)</span>
+        <span>🤖 Dr. GeoBot (Epidemiology Expert)</span>
         <span onclick="toggleChat()" style="cursor:pointer">✖</span>
     </div>
     <div class="chat-body" id="chatBody">
-        <div class="msg bot-msg">Xin chào! Tôi là Dr. GeoBot. Tôi có thể giúp bạn hiểu các mô hình toán học đằng sau đại dịch COVID-19. Bạn thắc mắc gì không?</div>
+        <div class="msg bot-msg">Hello! I am Dr. GeoBot. I can help you understand the mathematical models behind the COVID-19 pandemic. Do you have any questions?</div>
     </div>
-    <div id="typingIndicator" style="padding:10px; font-style:italic; color:#94a3b8; display:none">Dr. GeoBot đang phân tích...</div>
+    <div id="typingIndicator" style="padding:10px; font-style:italic; color:#94a3b8; display:none">Dr. GeoBot is analyzing...</div>
     <div style="padding:10px; background:white; display:flex; gap:5px; border-top:1px solid #eee;">
-        <input type="text" id="chatInput" placeholder="Hỏi về R0, miễn dịch cộng đồng..." style="flex:1; padding:8px; border:1px solid #cbd5e1; border-radius:20px; outline:none;" onkeypress="handleEnter(event)">
-        <button onclick="sendMessage()" style="border-radius:20px; padding:5px 15px;">Gửi</button>
+        <input type="text" id="chatInput" placeholder="Ask about R0, herd immunity..." style="flex:1; padding:8px; border:1px solid #cbd5e1; border-radius:20px; outline:none;" onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()" style="border-radius:20px; padding:5px 15px;">Send</button>
     </div>
 </div>
 
@@ -460,15 +537,13 @@
     // ==========================================
     // CONFIG & STATE
     // ==========================================
-    // Chuyển về chế độ Mock AI (không cần Key)
     const apiKey = ""; 
     
-    // 🔥 QUAN TRỌNG: Dán Link Web App (Exec URL) của bạn vào đây:
+    // Exec URL link
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo3p0ROadBOtAZtXCTKQAnVhKKFNMAbScPnfzW1gu-P7gdnsBqGMzREqiaqKyrg4kE0A/exec'; 
-    // Ví dụ: 'https://script.google.com/macros/s/AKfycbx.../exec'
     
     let state = {
-        name: '', id: '', startTime: null, 
+        name: '', id: '', startTime: null, mode: 1,
         currentTab: 'tab1', tabsDone: {t1:false, t2:false, t3:false, t4:false, t5:false},
         t1_gen: 0, t1_data: []
     };
@@ -480,12 +555,10 @@
     // ==========================================
     function logAction(action, detail, finishTime = null) {
         if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
-            alert("LỖI CÀI ĐẶT: Bạn chưa dán Link Web App từ Google Sheet vào code!\nHãy sửa dòng 470 trong file index.html.");
-            console.error("Thiếu GOOGLE_SCRIPT_URL");
+            console.error("Missing GOOGLE_SCRIPT_URL");
             return;
         }
 
-        // CHUYỂN ĐỔI SANG URLSearchParams ĐỂ TƯƠNG THÍCH TỐT HƠN VỚI GOOGLE APPS SCRIPT
         const params = new URLSearchParams();
         params.append("TenHocSinh", state.name); 
         params.append("ID", state.id);
@@ -496,8 +569,6 @@
             params.append("ThoiGianLamBai", finishTime);
         }
 
-        // Gửi bằng fetch với mode 'no-cors'
-        // Lưu ý: no-cors sẽ không trả về response readable, nhưng vẫn gửi dữ liệu đi
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST', 
             mode: 'no-cors', 
@@ -506,34 +577,74 @@
             },
             body: params
         }).then(() => {
-            console.log(`Đã gửi dữ liệu [${action}] đến Google Sheet.`);
-            if(action === 'Nộp bài') {
-                document.getElementById('submitStatus').innerText = "✅ Đã gửi dữ liệu thành công!";
+            console.log(`Sent data [${action}] to Google Sheet.`);
+            if(action === 'Submit Tab 1 Exercise' || action === 'Submit') {
+                document.getElementById('submitStatus') && (document.getElementById('submitStatus').innerText = "✅ Data successfully sent!");
             }
         }).catch(err => {
-            console.error("Lỗi gửi dữ liệu:", err);
-            if(action === 'Nộp bài') {
-                document.getElementById('submitStatus').innerText = "❌ Lỗi kết nối! Kiểm tra lại đường truyền.";
+            console.error("Data submission error:", err);
+            if(action === 'Submit Tab 1 Exercise' || action === 'Submit') {
+                document.getElementById('submitStatus') && (document.getElementById('submitStatus').innerText = "❌ Connection error! Please check your network.");
             }
         });
     }
 
-    function handleLogin(e) {
-        e.preventDefault();
+    function handleLogin(mode) {
         state.name = document.getElementById('studentName').value;
         state.id = document.getElementById('studentID').value;
-        if(!state.name || !state.id) return alert("Vui lòng nhập đủ thông tin!");
+        if(!state.name || !state.id) return alert("Please enter all required information (Name and ID) before proceeding!");
         
+        state.mode = mode; // Mode 1 (Researcher) or 2 (Fighter)
+
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('userInfoBar').style.display = 'flex';
         document.getElementById('mainApp').style.display = 'flex';
+        
+        document.getElementById('displayMode').innerText = mode === 1 ? "Researcher" : "Pandemic Fighter";
         document.getElementById('displayName').innerText = state.name;
         document.getElementById('displayID').innerText = state.id;
         state.startTime = new Date();
         setInterval(updateTimer, 1000);
         
-        // LOGGING: Đăng nhập
-        logAction('Đăng nhập', `Bắt đầu lúc ${state.startTime.toLocaleTimeString()}`);
+        // UI Configuration by mode
+        if(mode === 1) { 
+            document.querySelector('[data-tab="tab1"]').style.display = 'block';
+            document.querySelector('[data-tab="tab1"]').innerText = 'PART 1: VIRAL REPLICATION';
+            
+            document.querySelector('[data-tab="tab2"]').style.display = 'block';
+            document.querySelector('[data-tab="tab2"]').innerText = 'PART 2: COMMUNITY SPREAD';
+            
+            document.querySelector('[data-tab="tab3"]').style.display = 'block';
+            document.querySelector('[data-tab="tab3"]').innerText = 'PART 3: PREVENTION (5K)';
+            
+            document.querySelector('[data-tab="tab4"]').style.display = 'none';
+            
+            document.querySelector('[data-tab="tab5"]').style.display = 'none';
+            
+            switchTab('tab1');
+            document.getElementById('btn-next-t1').innerText = "Proceed to Part 2 →";
+            document.getElementById('btn-next-t2').innerText = "Proceed to Part 3 →";
+            document.getElementById('btn-next-t3').innerText = "🏆 COMPLETE PROGRAM";
+            document.getElementById('btn-next-t3').classList.replace('btn-primary', 'btn-success');
+        } else if(mode === 2) { 
+            document.querySelector('[data-tab="tab1"]').style.display = 'none';
+            document.querySelector('[data-tab="tab2"]').style.display = 'none';
+            
+            document.querySelector('[data-tab="tab3"]').style.display = 'none';
+            
+            document.querySelector('[data-tab="tab4"]').style.display = 'block';
+            document.querySelector('[data-tab="tab4"]').innerText = 'PART 1: VACCINE';
+            
+            document.querySelector('[data-tab="tab5"]').style.display = 'block';
+            document.querySelector('[data-tab="tab5"]').innerText = 'PART 2: NIPAH VIRUS';
+            
+            switchTab('tab4');
+            document.getElementById('btn-next-t4').innerText = "Proceed to Part 2 →";
+            document.getElementById('btn-next-t4').classList.replace('btn-success', 'btn-primary');
+        }
+
+        let modeName = mode === 1 ? "Researcher" : "Pandemic Fighter";
+        logAction('Login', `Started at ${state.startTime.toLocaleTimeString()} - Mode: ${modeName}`);
     }
 
     function updateTimer() {
@@ -569,7 +680,7 @@
         } else {
             const prev = state.t1_data[state.t1_data.length-1];
             const next = prev * q;
-            if(next > 10000) { alert("Virus đã phá vỡ tế bào! (Số lượng quá lớn)"); return; }
+            if(next > 10000) { alert("Virus has ruptured the cell! (Quantity too large)"); return; }
             state.t1_data.push(next);
             state.t1_gen++;
         }
@@ -599,61 +710,74 @@
         }
         if(currentVal > 100) {
             const warn = document.createElement('div');
-            warn.innerText = `... và ${currentVal - 100} virus khác`;
+            warn.innerText = `... and ${currentVal - 100} other viruses`;
             warn.style.position='absolute'; warn.style.bottom='20px'; warn.style.color='white'; warn.style.fontWeight='bold';
             cell.appendChild(warn);
         }
-
-        if(state.t1_gen >= 4) document.getElementById('t1_conclusion').style.display = 'block';
     }
 
     function resetTab1() {
         state.t1_gen = 0; state.t1_data = [];
-        document.getElementById('hostCell').innerHTML = '<div style="color: #475569; text-align: center;">(Nhấn nút Bắt đầu để soi kính hiển vi)</div>';
+        document.getElementById('hostCell').innerHTML = '<div style="color: #475569; text-align: center;">(Press Start to view under microscope)</div>';
         document.querySelector('#replicationTable tbody').innerHTML = '';
         document.getElementById('t1_conclusion').style.display = 'none';
         
-        // Reset inputs
-        document.querySelectorAll('#tab1 input.fill-blank').forEach(i => i.value = '');
+        document.querySelectorAll('#tab1 input.fill-blank, #tab1 select.fill-blank').forEach(i => i.value = '');
         document.querySelectorAll('#tab1 input[type="radio"]').forEach(i => i.checked = false);
         document.getElementById('ex_result_tab1').style.display = 'none';
     }
     
     function checkExerciseTab1() {
-        // Collect answers
-        const q1 = [
-            document.getElementById('q1_1').value,
-            document.getElementById('q1_2').value,
-            document.getElementById('q1_3').value,
-            document.getElementById('q1_4').value,
-            document.getElementById('q1_5').value
-        ].join(', ');
+        const q1_1 = document.getElementById('q1_1').value || "?";
+        const q1_2 = document.getElementById('q1_2').value || "?";
+        const q1_3 = document.getElementById('q1_3').value || "?";
+        const q1_4 = document.getElementById('q1_4').value || "?";
+        const q1_5 = document.getElementById('q1_5').value || "?";
         
-        const q2 = document.getElementById('q2_val').value;
-        const q3 = document.getElementById('q3_val').value;
-        const q4 = document.getElementById('q4_val').value;
-        const q5_1 = document.getElementById('q5_1').value;
-        const q5_2 = document.getElementById('q5_2').value;
-        const q6_1 = document.getElementById('q6_1').value;
-        const q6_2 = document.getElementById('q6_2').value;
+        const q2_1 = document.getElementById('q2_1').value || "?";
+        const q2_2 = document.getElementById('q2_2').value || "?";
+        const q2_3 = document.getElementById('q2_3').value || "?";
+        const q2_4 = document.getElementById('q2_4').value || "?";
+        
+        const q3_1 = document.getElementById('q3_1').value || "?";
+        const q3_2 = document.getElementById('q3_2').value || "?";
+        const q3_3 = document.getElementById('q3_3').value || "?";
+
+        const q4_op = document.getElementById('q4_op').value || "?";
+        const q4_1 = document.getElementById('q4_1').value || "?";
+
+        const q5_1 = document.getElementById('q5_1').value || "?";
+        const q5_diff = document.getElementById('q5_diff').value || "?";
+        const q5_2 = document.getElementById('q5_2').value || "?";
         
         const mcq = document.querySelector('input[name="mcq_formula"]:checked');
-        const q7 = mcq ? mcq.value : "Chưa chọn";
+        const q6 = mcq ? mcq.value : "Not selected";
 
-        // Construct detail string for Sheet
-        const details = `Q1:[${q1}] | Q2:${q2} | Q3:${q3} | Q4:${q4} | Q5:${q5_1},${q5_2} | Q6:${q6_1},${q6_2} | Q7:${q7}`;
+        const details = 
+            "--- STEP-BY-STEP SOLUTION ---\n" +
+            "Q1 (Quantity): u1=" + q1_1 + ", u2=" + q1_2 + ", u3=" + q1_3 + ", u4=" + q1_4 + ", u5=" + q1_5 + "\n" +
+            "Q2 (Ratios): u2/u1=" + q2_1 + ", u3/u2=" + q2_2 + ", u4/u3=" + q2_3 + " | Conclusion: " + q2_4 + "\n" +
+            "Q3 (Definition & q): " + q3_1 + " & " + q3_2 + " | q=" + q3_3 + "\n" +
+            "Q4 (Recurrence formula): un = un-1 " + q4_op + " " + q4_1 + "\n" +
+            "Q5 (Exponent patterns): " + q5_1 + " by " + q5_diff + " | exp: " + q5_2 + "\n" +
+            "Q6 (General formula choice): " + q6;
 
-        // Send to Sheet
-        logAction('Nộp bài tập Tab 1', details);
+        logAction('Submit Tab 1 Exercise', details);
 
-        // UI Feedback (Neutral)
         const resDiv = document.getElementById('ex_result_tab1');
         resDiv.style.display = 'block';
-        resDiv.className = 'inline-alert alert-success'; // Use success style for "Sent successfully"
-        resDiv.style.backgroundColor = '#e0f2fe'; // Blue-ish neutral
+        resDiv.className = 'inline-alert alert-success'; 
+        resDiv.style.backgroundColor = '#e0f2fe'; 
         resDiv.style.borderColor = '#7dd3fc';
         resDiv.style.color = '#0284c7';
-        resDiv.innerHTML = `✅ Đã ghi nhận câu trả lời của bạn vào hệ thống.`;
+        resDiv.innerHTML = `✅ Your answers have been recorded in the system.`;
+        
+        const formulaBox = document.getElementById('t1_conclusion');
+        formulaBox.style.display = 'block';
+        
+        setTimeout(() => {
+            formulaBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
     }
     
     function completeTab1() {
@@ -685,7 +809,7 @@
         let sum = 0;
         for(let i=1; i<=n; i++) {
             sum += current;
-            labels.push(`Chu kỳ ${i}`);
+            labels.push(`Cycle ${i}`);
             dataPoints.push(sum);
             current = current * q;
         }
@@ -700,7 +824,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Tổng số ca nhiễm tích lũy',
+                    label: 'Cumulative Total Infections',
                     data: dataPoints,
                     borderColor: '#ef4444',
                     backgroundColor: 'rgba(239, 68, 68, 0.2)',
@@ -710,14 +834,13 @@
             }
         });
         
-        // LOGGING: Tính toán lây lan
-        logAction('Tính toán lây lan', `u1=${u1}, q=${q}, n=${n} -> Tổng=${total}`);
+        logAction('Calculate spread', `u1=${u1}, q=${q}, n=${n} -> Total=${total}`);
     }
 
     function completeTab2() {
         state.tabsDone.t2 = true;
         document.querySelector('[data-tab="tab2"]').classList.add('completed');
-        switchTab('tab3');
+        if (state.mode === 1) switchTab('tab3'); 
     }
 
     // ==========================================
@@ -725,7 +848,7 @@
     // ==========================================
     function updateComplianceLabel() {
         const val = document.getElementById('complianceLevel').value;
-        const labels = ["Rất kém (q=4)", "Trung bình (q=3)", "Khá (q=2)", "Tuyệt vời (q=1.2)"];
+        const labels = ["Very Poor (q=4)", "Average (q=3)", "Good (q=2)", "Excellent (q=1.2)"];
         document.getElementById('complianceLabel').innerText = labels[val-1];
     }
 
@@ -740,7 +863,7 @@
         let curA = 1, curB = 1;
 
         for(let i=0; i<=n; i++) {
-            labels.push(`CK ${i}`);
+            labels.push(`Cyc ${i}`);
             dataA.push(curA);
             dataB.push(curB);
             curA *= qA;
@@ -754,18 +877,17 @@
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'QG A (Không 5K)', data: dataA, borderColor: '#ef4444', borderDash: [5,5] },
-                    { label: 'QG B (Có 5K)', data: dataB, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true }
+                    { label: 'Country A (No 5K)', data: dataA, borderColor: '#ef4444', borderDash: [5,5] },
+                    { label: 'Country B (With Measures)', data: dataB, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true }
                 ]
             },
             options: { scales: { y: { beginAtZero: true } } }
         });
         
         document.getElementById('preventionConclusion').innerText = 
-            `Nhận xét: Đường cong của QG A (màu đỏ) dốc lên rất nhanh theo cấp số mũ lớn. QG B (màu xanh) đã làm phẳng đường cong đáng kể nhờ 5K.`;
+            `Observation: Country A's curve (red) skyrockets exponentially. Country B (green) has significantly flattened the curve using safety measures.`;
             
-        // LOGGING: So sánh 5K
-        logAction('So sánh 5K', `Mức độ tuân thủ: ${val} (qB=${qB})`);
+        logAction('Compare Prevention Measures', `Compliance Level: ${val} (qB=${qB})`);
     }
 
     async function generateAiScenario() {
@@ -773,13 +895,13 @@
         const box = document.getElementById('aiScenarioBox');
         
         btn.disabled = true;
-        btn.innerHTML = '✨ AI đang phân tích dữ liệu...';
+        btn.innerHTML = '✨ AI is analyzing data...';
         
-        const systemPrompt = `Bạn là chuyên gia dịch tễ học. Hãy tạo 1 kịch bản ngắn (1 câu) về việc lây lan virus ở một địa điểm cụ thể (trường học, chợ, công sở) và yêu cầu tính toán. 
-        Format JSON: {"text": "..."}. Ví dụ: Tại chợ đầu mối, 1 tiểu thương F0 lây cho 4 người mỗi ngày...`;
+        const systemPrompt = `You are an epidemiologist. Generate 1 short scenario (1 sentence) about a viral outbreak in a specific location (school, market, office) and ask for a calculation. 
+        JSON Format: {"text": "..."}. Example: At a wholesale market, 1 Patient Zero infects 4 people per day...`;
         
         try {
-            const res = await callGeminiAPI("Tạo kịch bản lây nhiễm mới", systemPrompt);
+            const res = await callGeminiAPI("Generate new scenario", systemPrompt);
             const jsonStr = res.replace(/```json|```/g, '').trim();
             const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
             const validJson = jsonMatch ? jsonMatch[0] : jsonStr;
@@ -788,17 +910,17 @@
             box.style.display = 'block';
         } catch(e) {
             console.error(e);
-            alert("Lỗi kết nối AI: " + e.message);
+            alert("AI Connection Error: " + e.message);
         } finally {
             btn.disabled = false;
-            btn.innerHTML = '✨ AI: Tạo tình huống dịch tễ mới';
+            btn.innerHTML = '✨ AI: Generate new epidemiological scenario';
         }
     }
     
     function completeTab3() {
         state.tabsDone.t3 = true;
         document.querySelector('[data-tab="tab3"]').classList.add('completed');
-        switchTab('tab4');
+        if (state.mode === 1) finishAll(); 
     }
 
     // ==========================================
@@ -820,7 +942,7 @@
         }
         
         document.getElementById('vaccineResult').innerHTML = 
-            `✅ KẾT QUẢ: Sau <span style="font-size:1.5em; color:darkblue">${hours}</span> giờ, tải lượng virus giảm xuống còn ${Math.floor(load)}. <br>Hệ miễn dịch đã kiểm soát được tình hình!`;
+            `✅ RESULT: After <span style="font-size:1.5em; color:darkblue">${hours}</span> hours, the viral load decreased to ${Math.floor(load)}. <br>The immune system has successfully controlled the situation!`;
         document.getElementById('vaccineResult').style.backgroundColor = '#dcfce7';
 
         const ctx = document.getElementById('vaccineChart').getContext('2d');
@@ -830,7 +952,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Tải lượng Virus (q=0.5)',
+                    label: 'Viral Load (q=0.5)',
                     data: data,
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.2)',
@@ -848,7 +970,7 @@
                                 yMax: threshold,
                                 borderColor: 'red',
                                 borderWidth: 2,
-                                label: { content: 'Ngưỡng an toàn', enabled: true }
+                                label: { content: 'Safe Threshold', enabled: true }
                             }
                         }
                     }
@@ -856,14 +978,13 @@
             }
         });
         
-        // LOGGING: Vaccine
-        logAction('Mô phỏng Vaccine', `Hoàn thành sau ${hours} giờ`);
+        logAction('Simulate Vaccine', `Completed after ${hours} hours`);
     }
 
     function completeTab4() {
         state.tabsDone.t4 = true;
         document.querySelector('[data-tab="tab4"]').classList.add('completed');
-        switchTab('tab5');
+        if (state.mode === 2) switchTab('tab5'); 
     }
 
     // ==========================================
@@ -880,32 +1001,39 @@
             divSuccess.style.display = 'block';
             state.tabsDone.t5 = true;
             document.querySelector('[data-tab="tab5"]').classList.add('completed');
-            // LOGGING: Nipah Đúng
-            logAction('Trả lời câu hỏi Nipah', 'Đúng (Chọn Có)');
+            logAction('Answer Nipah Question', 'Correct (Selected YES)');
         } else {
             divError.style.display = 'block';
-            // LOGGING: Nipah Sai
-            logAction('Trả lời câu hỏi Nipah', 'Sai (Chọn Không)');
+            logAction('Answer Nipah Question', 'Incorrect (Selected NO)');
         }
     }
 
     function finishAll() {
-        if(!state.tabsDone.t1 || !state.tabsDone.t2 || !state.tabsDone.t3 || !state.tabsDone.t5) {
-            alert("Vui lòng hoàn thành các phần trước!"); return;
+        if (state.mode === 1) {
+            if(!state.tabsDone.t1 || !state.tabsDone.t2 || !state.tabsDone.t3) {
+                alert("Please complete parts 1, 2, and 3 first!"); return;
+            }
+        } else if (state.mode === 2) {
+            if(!state.tabsDone.t4 || !state.tabsDone.t5) {
+                alert("Please complete parts 1 and 2 first!"); return;
+            }
+        } else {
+            if(!state.tabsDone.t1 || !state.tabsDone.t2 || !state.tabsDone.t3 || !state.tabsDone.t4 || !state.tabsDone.t5) {
+                alert("Please complete all previous parts!"); return;
+            }
         }
+
         document.getElementById('mainApp').style.display = 'none';
         document.getElementById('completionBanner').style.display = 'block';
         
-        // Tính tổng thời gian
         const diff = Math.floor((new Date() - state.startTime)/1000);
         const minutes = Math.floor(diff/60);
         const seconds = diff%60;
-        const timeString = `${minutes} phút ${seconds} giây`;
+        const timeString = `${minutes} minutes ${seconds} seconds`;
         
         document.getElementById('totalTimeCompleted').innerText = timeString;
         
-        // LOGGING: Nộp bài cuối cùng
-        logAction('Nộp bài', 'Đã hoàn thành toàn bộ chương trình', timeString);
+        logAction('Submit', 'Completed the entire program', timeString);
     }
     
     function restartLesson() { location.reload(); }
@@ -923,23 +1051,23 @@
             setTimeout(() => {
                 const lowerPrompt = prompt.toLowerCase();
                 let reply = "";
-                if (lowerPrompt.includes("kịch bản") || lowerPrompt.includes("tình huống") || lowerPrompt.includes("lây nhiễm")) {
+                if (lowerPrompt.includes("scenario") || lowerPrompt.includes("situation") || lowerPrompt.includes("generate")) {
                     const scenarios = [
-                        `{ "text": "Trong một buổi họp kín, 1 người F0 lây cho 2 người khác sau mỗi 30 phút. Tính số người nhiễm sau 2 giờ (4 chu kỳ)." }`,
-                        `{ "text": "Tại một siêu thị, biến chủng Omicron có hệ số lây q=5. Từ 2 ca ban đầu, sau 3 chu kỳ sẽ có bao nhiêu người nhiễm?" }`,
-                        `{ "text": "Một ổ dịch trong khu công nghiệp: F0 ban đầu là 1 người, mỗi ngày lây cho 3 người khác. Tính tổng số ca sau 1 tuần làm việc." }`
+                        `{ "text": "During a closed meeting, 1 Patient Zero infects 2 other people every 30 minutes. Calculate the total number of infections after 2 hours (4 cycles)." }`,
+                        `{ "text": "At a supermarket, the Omicron variant has a transmission rate of q=5. Starting from 2 initial cases, how many people will be infected after 3 cycles?" }`,
+                        `{ "text": "An outbreak in an industrial zone: The initial Patient Zero is 1 person, infecting 3 others each day. Calculate the total cases after 1 working week." }`
                     ];
                     reply = scenarios[Math.floor(Math.random() * scenarios.length)];
                 } else {
                     const chatResponses = [
-                        "🤖 Dr. GeoBot: **R0 (Hệ số lây nhiễm cơ bản)** là số người trung bình mà một F0 lây bệnh. Nếu R0 > 1, dịch bệnh sẽ bùng phát theo cấp số nhân!",
-                        "🤖 Dr. GeoBot: **Miễn dịch cộng đồng** đạt được khi đủ số người có kháng thể (do tiêm vắc-xin hoặc từng mắc bệnh), khiến virus không còn người để lây nhiễm (cắt đứt chuỗi u_n).",
-                        "🤖 Dr. GeoBot: Toán học rất quan trọng! Công thức **S_n** giúp các nhà dịch tễ dự báo số giường bệnh cần thiết cho tương lai.",
-                        "🤖 Dr. GeoBot: Bạn có biết? **Vắc-xin** giúp biến cấp số nhân tăng dần (bùng dịch) thành cấp số nhân lùi vô hạn (dập dịch) đấy! 📉"
+                        "🤖 Dr. GeoBot: **R0 (Basic Reproduction Number)** is the average number of people one infected person will pass the virus to. If R0 > 1, the disease will spread exponentially!",
+                        "🤖 Dr. GeoBot: **Herd Immunity** is achieved when enough people have antibodies (either from vaccines or previous infections), leaving the virus with no one to infect (breaking the sequence).",
+                        "🤖 Dr. GeoBot: Math is incredibly important! The formula **S_n** helps epidemiologists predict the number of hospital beds required for the future.",
+                        "🤖 Dr. GeoBot: Did you know? **Vaccines** help convert a rapidly increasing geometric sequence (outbreak) into a decreasing geometric sequence to zero (eradication)! 📉"
                     ];
-                    if(lowerPrompt.includes("r0")) reply = chatResponses[0];
-                    else if(lowerPrompt.includes("miễn dịch")) reply = chatResponses[1];
-                    else if(lowerPrompt.includes("vắc") || lowerPrompt.includes("vaccine")) reply = chatResponses[3];
+                    if(lowerPrompt.includes("r0") || lowerPrompt.includes("rate")) reply = chatResponses[0];
+                    else if(lowerPrompt.includes("immunity") || lowerPrompt.includes("herd")) reply = chatResponses[1];
+                    else if(lowerPrompt.includes("vaccine")) reply = chatResponses[3];
                     else reply = chatResponses[Math.floor(Math.random() * chatResponses.length)];
                 }
                 resolve(reply);
@@ -970,7 +1098,7 @@
         } catch (error) {
             console.error(error);
             document.getElementById('typingIndicator').style.display='none';
-            body.innerHTML += `<div class="msg bot-msg" style="color:red">Lỗi hệ thống giả lập.</div>`;
+            body.innerHTML += `<div class="msg bot-msg" style="color:red">Simulated System Error.</div>`;
         }
     }
 </script>
