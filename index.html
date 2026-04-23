@@ -27,7 +27,7 @@
         .login-box h2 { color: var(--danger); margin-bottom: 10px; font-size: 1.8em; }
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
-        .form-group input { width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
         
         .login-btn-option { width: 100%; padding: 15px; border: 2px solid transparent; border-radius: 12px; font-size: 15px; font-weight: normal; cursor: pointer; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 15px; line-height: 1.4; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .option-home { background: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
@@ -59,7 +59,6 @@
         .btn-primary { background: var(--primary); } .btn-primary:hover { background: var(--primary-dark); }
         .btn-danger { background: var(--danger); } .btn-danger:hover { background: #dc2626; }
         .btn-success { background: var(--success); } .btn-success:hover { background: #059669; }
-        .btn-ai { background: linear-gradient(45deg, #8b5cf6, #d946ef); color: white; }
         
         /* TAB 1: VIRUS VISUALIZER */
         .control-bar { background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
@@ -67,22 +66,8 @@
         .input-wrap input, .input-wrap select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
         
         .simulation-area { display: flex; gap: 20px; height: 500px; }
-        .host-cell { 
-            flex: 1; 
-            background: #1e1e1e; 
-            border-radius: 50%; 
-            position: relative; 
-            overflow: hidden; 
-            border: 8px solid #334155; 
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.2); 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            aspect-ratio: 1/1; 
-            max-height: 500px;
-        }
+        .host-cell { flex: 1; background: #1e1e1e; border-radius: 50%; position: relative; overflow: hidden; border: 8px solid #334155; box-shadow: inset 0 0 80px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; aspect-ratio: 1/1; max-height: 500px; }
         .host-cell::before { content: 'Host Cell (Microscope)'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); color: #64748b; font-weight: bold; opacity: 0.5; font-size: 0.8em; z-index: 10; }
-        
         .virus-node { position: absolute; font-size: 20px; animation: float 3s infinite ease-in-out; user-select: none; }
         @keyframes float { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(5px, -5px) rotate(10deg); } }
         
@@ -122,8 +107,8 @@
         /* Exercise Styles */
         .exercise-section { margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px; }
         .exercise-item { margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .exercise-item strong { display: block; margin-bottom: 8px; color: var(--primary-dark); }
-        .fill-blank { border: none; border-bottom: 2px solid #94a3b8; background: transparent; padding: 2px 5px; width: 120px; text-align: center; outline: none; font-weight: bold; color: var(--primary); }
+        .exercise-item strong { display: inline-block; margin-bottom: 8px; color: var(--primary-dark); font-size: 1.1em;}
+        .fill-blank { border: none; border-bottom: 2px solid #94a3b8; background: transparent; padding: 2px 5px; width: 80px; text-align: center; outline: none; font-weight: bold; color: var(--primary); font-size: 1em;}
         .fill-blank:focus { border-bottom-color: var(--primary); }
         .radio-option { display: block; margin: 8px 0; cursor: pointer; }
 
@@ -131,11 +116,17 @@
         .fraction { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 5px; text-align: center; }
         .fraction .num { border-bottom: 2px solid currentColor; padding: 0 8px; }
         .fraction .den { padding: 0 8px; }
+        
+        /* DRAG & DROP */
+        .drag-container { display: flex; gap: 10px; margin: 15px 0; padding: 15px; background: #fff; border-radius: 8px; border: 1px dashed #cbd5e1; flex-wrap: wrap; }
+        .drag-item { display: inline-block; padding: 8px 20px; background: var(--primary); color: white; border-radius: 6px; cursor: grab; font-weight: bold; font-family: monospace; font-size: 1.1em; user-select: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .drag-item:active { cursor: grabbing; }
+        .drop-zone { display: inline-block; width: 120px; height: 35px; border: 2px dashed #94a3b8; border-radius: 6px; vertical-align: middle; background: #f1f5f9; text-align: center; line-height: 35px; color: transparent; transition: 0.3s; margin: 0 5px; box-sizing: border-box; overflow: hidden; }
+        .drop-zone.filled { border: 2px solid var(--success); background: #ecfdf5; color: var(--success); font-weight: bold; font-family: monospace; font-size: 1.1em;}
     </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
 <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
         <div style="font-size: 50px; margin-bottom: 10px;">🦠</div>
@@ -151,6 +142,21 @@
                 <label>Identification Code (ID)</label>
                 <input type="text" id="studentID" placeholder="e.g., STU001" required>
             </div>
+            <div class="form-group">
+                <label>Class</label>
+                <select id="studentClass" required>
+                    <option value="">-- Select Class --</option>
+                    <option value="9A">9A</option>
+                    <option value="9B">9B</option>
+                    <option value="9C">9C</option>
+                    <option value="9D">9D</option>
+                    <option value="9E">9E</option>
+                    <option value="9F">9F</option>
+                    <option value="9G">9G</option>
+                    <option value="9H">9H</option>
+                    <option value="9I">9I</option>
+                </select>
+            </div>
             <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 25px; margin-bottom: 15px;">
                 <button type="button" class="login-btn-option option-home" onclick="handleLogin(1)">
                     <span style="font-size: 24px;">🏠</span> 
@@ -162,28 +168,25 @@
                 </button>
             </div>
             
-            <!-- BONG BÓNG CHAT AI ĐĂNG NHẬP ĐÃ CHỈNH SỬA -->
             <div id="loginAiBubble" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px 15px; border-radius: 12px; text-align: left; display: flex; gap: 12px; align-items: center; font-size: 0.9em;">
                 <div style="font-size: 28px;">🤖</div>
                 <div style="color: #475569; line-height: 1.4;">
-                    <b>Dr. GeoBot:</b> Hello! Please select the correct role above. If you are studying at home, choose <b>Researcher</b>!
+                    <b>Dr. GeoBot:</b> Hello! Please enter your details and select the correct role above. If you are studying at home, choose <b>Researcher</b>!
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-<!-- USER BAR -->
 <div id="userInfoBar" class="user-info-bar" style="display: none;">
     <div class="user-details">
-        👨‍🔬 Role: <span id="displayMode">---</span> | Name: <span id="displayName">---</span> | ID: <span id="displayID">---</span>
+        👨‍🔬 Role: <span id="displayMode">---</span> | Name: <span id="displayName">---</span> | Class: <span id="displayClass">---</span> | ID: <span id="displayID">---</span>
     </div>
     <div class="session-time">
         ⏱️ Session time: <span id="sessionTimer">00:00</span>
     </div>
 </div>
 
-<!-- COMPLETION BANNER -->
 <div id="completionBanner" class="completion-banner">
     <div style="font-size: 40px; margin-bottom: 10px;">💉🎉</div>
     <h2 style="justify-content: center; color: white; border: none; margin: 0;">MISSION ACCOMPLISHED!</h2>
@@ -193,7 +196,6 @@
     <button onclick="restartLesson()" style="background: white; color: #059669; margin-top: 15px;">🔄 Start Over</button>
 </div>
 
-<!-- MAIN APP -->
 <div class="app-container" id="mainApp" style="display: none;">
     <div class="nav-tabs">
         <div class="nav-item active" data-tab="tab1" onclick="switchTab('tab1')">PART 1: VIRAL REPLICATION</div>
@@ -203,7 +205,6 @@
         <div class="nav-item" data-tab="tab5" onclick="switchTab('tab5')">PART 5: NIPAH VIRUS</div>
     </div>
 
-    <!-- TAB 1: VIRAL REPLICATION -->
     <div id="tab1" class="tab-content active">
         <h2>🔬 Mechanism: Virus replication in cells</h2>
         <p style="color:#64748b; margin-bottom: 20px;">
@@ -249,7 +250,6 @@
             </div>
         </div>
 
-        <!-- EXERCISE SECTION -->
         <div class="exercise-section">
             <div class="info-card" style="border-left: 5px solid var(--danger);">
                 <h3 style="color: var(--danger); margin-top: 0;">📚 Case Study: COVID-19</h3>
@@ -358,7 +358,6 @@
                 <button class="btn-primary" onclick="checkExerciseTab1()" style="width: 100%;">📤 SUBMIT EXERCISE</button>
                 <div id="ex_result_tab1" class="inline-alert" style="margin-top: 15px;"></div>
                 
-                <!-- CONCLUSION BOX (Hidden until submission) -->
                 <div class="formula-box" id="t1_conclusion" style="display:none; margin-top: 25px; border: 2px solid var(--primary); background: #f0f9ff; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);">
                     <div style="font-size: 1.3em; margin-bottom: 10px; color: var(--primary-dark);">🌟 <strong>AWESOME! YOU FOUND THE PATTERN</strong></div>
                     <p style="font-size: 1em; line-height: 1.6; color: #334155; margin-bottom: 20px;">
@@ -380,7 +379,6 @@
         <button id="btn-next-t1" class="btn-primary" onclick="completeTab1()" style="float: right; margin-top: 20px;">Complete Part 1 →</button>
     </div>
 
-    <!-- TAB 2: COMMUNITY SPREAD -->
     <div id="tab2" class="tab-content">
         <h2>🌍 Spread: Total community infections</h2>
         
@@ -422,7 +420,6 @@
             </div>
         </div>
 
-        <!-- EXERCISE SECTION - PHASE 1 -->
         <div class="exercise-section" id="t2_phase1_container">
             <h3 style="color: var(--primary-dark); margin-top: 0;">📝 PHASE 1</h3>
             
@@ -467,7 +464,6 @@
             <div id="ex_result_t2_p1" class="inline-alert" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- PHASE 2 -->
         <div id="t2_phase2_container" style="display:none; margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
             <h3 style="color: #8b5cf6; margin-top: 0;">🚀 PHASE 2 (Unlocked)</h3>
             
@@ -686,7 +682,6 @@
             <div id="ex_result_t2_p2" class="inline-alert" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- PHASE 3 -->
         <div id="t2_phase3_container" style="display:none; margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
             <h3 style="color: #ea580c; margin-top: 0;">🔥 PHASE 3 (Unlocked)</h3>
             
@@ -742,7 +737,6 @@
             <div id="ex_result_t2_p3" class="inline-alert" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- FINAL PART (Phase 4) -->
         <div id="t2_phase4_container" style="display:none; margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
             <h3 style="color: var(--danger); margin-top: 0; text-align: center; font-size: 1.6em;">🎉 CONGRATULATION! YOU HAVE FOUND THE FORMULA!!!</h3>
             
@@ -801,118 +795,144 @@
         </div>
     </div>
 
-    <!-- TAB 3: PREVENTION (5K) -->
     <div id="tab3" class="tab-content">
-        <h2>🛡️ Prevention: Impact of Safety Measures</h2>
-        <p>Compare the spread rate between two countries: One is relaxed, and the other rigorously applies safety measures (Masks, Disinfection, Distance, No Gatherings, Health Declaration).</p>
-        
-        <div class="grid-2">
-            <div class="info-card">
-                <h3>Scenario Configuration</h3>
-                
-                <div style="margin-bottom: 20px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
-                    <strong style="color: var(--danger)">Country A (Relaxed):</strong>
-                    <div class="input-wrap">Infection Rate <span class="math-symbol">q<sub>A</sub></span> = 5 (Very fast)</div>
-                </div>
+        <h2>🛡️ Prevention (5K) & Control Exercises</h2>
+        <p style="color:#64748b; margin-bottom: 20px; line-height: 1.6;">
+            Applying the 5K measures and Vaccines helps reduce the infection rate (<span class="math-symbol" style="white-space: nowrap;">q</span>). 
+            When <span class="math-symbol" style="white-space: nowrap;">q > 1</span>, the infections spread exponentially. But when we control it so <span class="math-symbol" style="white-space: nowrap;">q < 1</span>, the new infections decrease over time, forming a decreasing geometric sequence. Let's practice what you've learned!
+        </p>
 
-                <div>
-                    <strong style="color: var(--success)">Country B (Applies Measures):</strong>
-                    <div class="input-wrap">
-                        <label>Compliance level:</label>
-                        <input type="range" id="complianceLevel" min="1" max="4" value="2" style="width: 100%" oninput="updateComplianceLabel()">
-                        <div id="complianceLabel" style="text-align: center; font-weight: bold; color: var(--success)">Good Compliance (<span class="math-symbol">q<sub>B</sub></span> = 2)</div>
-                    </div>
-                </div>
-
-                <button class="btn-success" style="width: 100%; margin-top: 20px;" onclick="comparePrevention()">⚖️ COMPARE EFFECTIVENESS</button>
-                
-                <!-- AI SCENARIO GENERATOR -->
-                <button id="btnAiScenario" class="btn-ai" style="width:100%; margin-top:15px;" onclick="generateAiScenario()">
-                    ✨ AI: Generate new epidemiological scenario
-                </button>
-                <div id="aiScenarioBox" style="display:none; margin-top:10px; padding:10px; background:#f0fdf4; border-radius:8px; font-size:0.9em; border:1px solid #bbf7d0;">
-                    <strong style="color:#15803d">🤖 Scenario:</strong> <span id="aiScenarioText"></span>
+        <div class="exercise-section" style="border-top: none; margin-top: 0; padding-top: 0;">
+            
+            <div class="exercise-item">
+                <strong style="white-space: nowrap;">Question 1: A New Variant Appears (Short Answer)</strong>
+                <p>Assume a new variant appears with <strong>5 initial infections</strong> in the first cycle (<span class="math-symbol" style="white-space: nowrap;">u<sub>1</sub> = 5</span>). Because no prevention is taken yet, each infected person spreads the virus to 4 others in the next cycle (Infection rate <span class="math-symbol" style="white-space: nowrap;">q = 4</span>). </p>
+                <div style="margin-top: 10px;">
+                    How many <strong>new infections</strong> will be recorded exactly in the 5th infection cycle (<span class="math-symbol" style="white-space: nowrap;">u<sub>5</sub></span>)?<br><br>
+                    <span class="math-symbol" style="white-space: nowrap;">u<sub>5</sub></span> = <input type="number" class="fill-blank" id="t3_q1" placeholder="Number"> infections.
                 </div>
             </div>
 
-            <div class="info-card">
-                <canvas id="preventionChart"></canvas>
-                <div id="preventionConclusion" style="margin-top: 15px; font-size: 0.9em; font-style: italic;"></div>
+            <div class="exercise-item">
+                <strong style="white-space: nowrap;">Question 2: Total Infections Before Lockdown (Multiple Choice)</strong>
+                <p>An outbreak starts from <strong>2 "Patient Zeros"</strong> (<span class="math-symbol" style="white-space: nowrap;">u<sub>1</sub> = 2</span>). The infection rate is <span class="math-symbol" style="white-space: nowrap;">q = 3</span>. A strict lockdown is enforced immediately after the 6th infection cycle ends. Calculate the <strong>total number of infected people</strong> (<span class="math-symbol" style="white-space: nowrap;">S<sub>6</sub></span>) from cycle 1 to the end of cycle 6.</p>
+                <div style="margin-top: 10px;">
+                    <label class="radio-option"><input type="radio" name="t3_q2" value="A"> A. 1458</label>
+                    <label class="radio-option"><input type="radio" name="t3_q2" value="B"> B. 486</label>
+                    <label class="radio-option"><input type="radio" name="t3_q2" value="C"> C. 728</label>
+                    <label class="radio-option"><input type="radio" name="t3_q2" value="D"> D. 726</label>
+                </div>
             </div>
+
+            <div class="exercise-item">
+                <strong style="white-space: nowrap;">Question 3: Effectiveness of Prevention (Drag and Drop)</strong>
+                <p>Thanks to vaccination and 5K, the infection rate dropped to <strong><span class="math-symbol" style="white-space: nowrap;">q = 0.5</span></strong>. This means the number of new infections this week is only half of last week's. </p>
+                <p>Given that the first week recorded <span class="math-symbol" style="white-space: nowrap;">u<sub>1</sub> = 16000</span> new infections. Drag the appropriate numbers into the blank boxes to forecast the new infections for the upcoming weeks.</p>
+                
+                <div class="drag-container">
+                    <span style="color:#64748b; font-weight:bold; margin-right: 10px; line-height:35px;">Drag these values:</span>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)">1000</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)">8000</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)">500</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)">4000</div>
+                    <div class="drag-item" draggable="true" ondragstart="drag(event)">2000</div>
+                </div>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; align-items: center; font-size: 1.1em;">
+                    <div>Week 2 (<span class="math-symbol" style="white-space: nowrap;">u<sub>2</sub></span>) = <div class="drop-zone" id="dz_u2" style="width:80px" ondrop="drop(event)" ondragover="allowDrop(event)">Drop</div></div>
+                    <div>Week 3 (<span class="math-symbol" style="white-space: nowrap;">u<sub>3</sub></span>) = <div class="drop-zone" id="dz_u3" style="width:80px" ondrop="drop(event)" ondragover="allowDrop(event)">Drop</div></div>
+                    <div>Week 5 (<span class="math-symbol" style="white-space: nowrap;">u<sub>5</sub></span>) = <div class="drop-zone" id="dz_u5" style="width:80px" ondrop="drop(event)" ondragover="allowDrop(event)">Drop</div></div>
+                </div>
+                <small style="color:var(--primary-dark); display:block; margin-top:10px;">* Note: Be careful, it jumps to Week 5!</small>
+            </div>
+
+            <div class="exercise-item">
+                <strong style="white-space: nowrap;">Question 4: Total Infections (Normal Formula)</strong>
+                <p>Continuing with the data from Question 3 (<span class="math-symbol" style="white-space: nowrap;">u<sub>1</sub> = 16000</span> and <span class="math-symbol" style="white-space: nowrap;">q = 0.5</span>). If the prevention measures are maintained, calculate the total number of infected people after exactly 5 weeks (<span class="math-symbol" style="white-space: nowrap;">S<sub>5</sub></span>).</p>
+                <p>Apply the standard geometric sequence sum formula you learned: <br><span class="math-symbol" style="white-space: nowrap;">S<sub>n</sub> = u<sub>1</sub> × (1 - q<sup>n</sup>) / (1 - q)</span></p>
+                <div style="margin-top: 10px;">
+                    Total infections after 5 weeks (<span class="math-symbol" style="white-space: nowrap;">S<sub>5</sub></span>) = <input type="number" class="fill-blank" id="t3_q4" style="width: 100px;" placeholder="Number"> infections.
+                </div>
+            </div>
+
+            <button id="btn_submit_tab3" class="btn-success" onclick="checkExerciseTab3()" style="width: 100%; font-size: 1.1em; padding: 15px;">📤 SUBMIT PHASE 1</button>
+            <div id="ex_result_tab3" class="inline-alert" style="margin-top: 15px; background-color: #f8fafc; border: 1px solid #e2e8f0;"></div>
+
         </div>
-        <button id="btn-next-t3" class="btn-primary" onclick="completeTab3()" style="float: right; margin-top: 20px;">Complete Part 3 →</button>
+
+        <div id="phase2_section" style="display: none; animation: fadeIn 0.5s; border-top: 2px dashed #cbd5e1; margin-top: 30px; padding-top: 20px;">
+            <h3 style="color: var(--primary-dark);">🌟 Phase 2: The Infinite Decreasing Geometric Sequence</h3>
+            <p style="color:#64748b; margin-bottom: 20px; line-height: 1.6;">
+                Notice how the number of new infections drops each week? If we maintain <span class="math-symbol" style="white-space: nowrap;">q < 1</span> forever, the number of new infections will eventually approach 0. This forms an <strong>infinite decreasing geometric sequence</strong>.
+            </p>
+            <div class="formula-box" style="background: #ecfdf5; border-color: #10b981; color: #065f46;">
+                When <span class="math-symbol" style="white-space: nowrap;">n</span> is very large, <span class="math-symbol" style="white-space: nowrap;">q<sup>n</sup></span> approaches 0. The formula simplifies to:<br>
+                <span class="math-symbol" style="font-size: 1.5em; white-space: nowrap;">S = u<sub>1</sub> / (1 - q)</span>
+            </div>
+            
+            <div class="exercise-item" style="border: 2px solid var(--success); margin-top: 20px;">
+                <strong style="white-space: nowrap; color: var(--success);">Question 5: Maximum Total Infections</strong>
+                <p>Using the new simplified formula, calculate the <strong>maximum total number of infections</strong> that will occur from Week 1 until the disease is completely eradicated.</p>
+                <div style="margin-top: 10px;">
+                    Max total infections (<span class="math-symbol" style="white-space: nowrap;">S</span>) = <input type="number" class="fill-blank" id="t3_q5" style="width: 100px; color: var(--success); border-bottom-color: var(--success);" placeholder="Number"> infections.
+                </div>
+            </div>
+            
+            <button class="btn-success" onclick="checkPhase2()" style="width: 100%; font-size: 1.1em; padding: 15px; margin-top: 10px; background-color: var(--primary);">✅ SUBMIT PHASE 2</button>
+            <div id="ex_result_phase2" class="inline-alert" style="margin-top: 15px;"></div>
+        </div>
+
+        <button id="btn-next-t3" class="btn-primary" onclick="completeTab3()" style="float: right; margin-top: 20px; display: none;">Complete Part 3 →</button>
     </div>
 
-    <!-- TAB 4: VACCINATION -->
     <div id="tab4" class="tab-content">
         <h2>💉 Vaccine Effectiveness & Immunity</h2>
-        <div class="grid-2">
-            <div class="info-card">
-                <h3>Viral decay model (Decreasing geometric sequence)</h3>
-                <p>After vaccination, the immune system is "trained". When the virus enters, antibodies destroy them quickly.</p>
-                <p>Assume every hour, the viral load is halved (<span class="math-symbol">q = 0.5</span>).</p>
-                
-                <div class="input-wrap" style="margin-top: 15px; background: #f0f9ff; padding: 15px; border-radius: 8px;">
-                    <label>Initial viral load:</label>
-                    <input type="number" id="t4_load" value="1000000" disabled style="background:#e2e8f0; color: #64748b; font-weight: bold;">
-                </div>
-                
-                <div class="input-wrap" style="margin-top: 10px; background: #ecfdf5; padding: 15px; border-radius: 8px; border: 1px solid #a7f3d0;">
-                    <label style="color: #047857">🛡️ Immune system safe threshold:</label>
-                    <div style="font-weight: bold; color: #059669">Under 100 viruses</div>
-                    <small>When the viral load drops below this level, the body completely controls the disease.</small>
-                </div>
-
-                <button class="btn-primary" onclick="simulateVaccine()" style="width:100%; margin-top:20px">📉 SIMULATE DESTRUCTION PROCESS</button>
-            </div>
-
-            <div class="info-card">
-                <h3>Viral Load Chart</h3>
-                <canvas id="vaccineChart" style="max-height: 250px;"></canvas>
-                <div id="vaccineResult" style="margin-top: 15px; font-weight: bold; color: var(--success); padding: 10px; border-radius: 8px;"></div>
-            </div>
-        </div>
-        <button id="btn-next-t4" class="btn-primary" onclick="completeTab4()" style="float: right; margin-top: 20px;">Complete Part 4 →</button>
     </div>
 
-    <!-- TAB 5: NIPAH -->
     <div id="tab5" class="tab-content">
-        <h2>🦇 Future Challenge: Nipah Virus</h2>
-        <div class="info-card" style="background: #fff1f2; border-color: #fecaca; max-width: 800px; margin: 0 auto;">
-            <h3>⚠️ Epidemiological Warning</h3>
-            <p>Nipah is a virus transmitted from bats to humans with a high mortality rate (40-75%).</p>
-            <p style="font-size: 1.1em; line-height: 1.6;">
-                <b>Research problem:</b> Assume in a village, every 1 Nipah-infected person infects 2 others (<span class="math-symbol">q=2</span>). 
-                If not isolated, after 10 transmission cycles, will the entire village of <b>500 people</b> be infected?
-            </p>
-            
-            <div style="margin-top: 25px; display: flex; gap: 15px; justify-content: center;">
-                <button onclick="checkNipah(true)" class="btn-danger" style="padding: 15px 30px; font-size: 1.1em;">YES, fully infected</button>
-                <button onclick="checkNipah(false)" style="padding: 15px 30px; font-size: 1.1em; background: #94a3b8;">NO</button>
-            </div>
-
-            <!-- Inline Result Display -->
-            <div id="nipahResultSuccess" class="inline-alert alert-success">
-                ✅ CORRECT! <br>
-                The total number of infections is <b>1,023</b> people (using the geometric sequence sum formula). <br>
-                This number is larger than the 500 population of the village -> The entire village is infected.
-            </div>
-            <div id="nipahResultError" class="inline-alert alert-error">
-                ❌ INCORRECT. <br>
-                Calculate the sum <span class="math-symbol">S<sub>10</sub></span> with <span class="math-symbol">u<sub>1</sub>=1, q=2</span>. <br>
-                The result is 1023, which is much larger than the 500 population.
-            </div>
+        <h2 style="color: var(--primary-dark); border-left: 5px solid var(--danger); padding-left: 15px;">
+            🌍 Everything you need to know about Nipah virus
+        </h2>
+        
+        <div style="text-align: center; margin-bottom: 25px;">
+            <iframe width="100%" height="450" src="https://www.youtube.com/embed/M73GqyhPPys?si=SsyskuV-6LxuhQrd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></iframe>
         </div>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <button class="btn-success" onclick="finishAll()" style="font-size: 1.2em; padding: 15px 40px; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);">
-                🏆 COMPLETE PROGRAM
-            </button>
+        <div class="info-card" style="margin-bottom: 25px; line-height: 1.6; color: #475569;">
+            <p style="margin-top: 0;">The Nipah virus (NiV) is resurging in West Bengal, India, in early 2026, with confirmed cases including healthcare workers, raising concerns about potential spread. This is a dangerous zoonotic virus transmitted from bats and pigs to humans, characterized by a high fatality rate (40-75%). It causes severe encephalitis (inflammation of the brain), and currently, there are no specific vaccines or treatments available.</p>
+            <p style="margin-bottom: 0;">Suppose in a village there is one person infected with the Nipah virus, and it is known that for every one infected person, they will infect two others (<span class="math-symbol">R<sub>0</sub> = 2</span>).</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="info-card" style="display: flex; flex-direction: column;">
+                <h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">📊 Simulate the situation</h3>
+                <ol style="line-height: 1.6; padding-left: 20px; color: #334155; flex-grow: 1; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">Explain why the cases of infection after each outbreak form a geometric sequence?</li>
+                    <li style="margin-bottom: 10px;">What is the value for <span class="math-symbol">u<sub>1</sub></span> (the first term) and <span class="math-symbol">q</span> (common ratio)?</li>
+                    <li style="margin-bottom: 10px;">If no isolation is implemented, after 10 cycles of transmission, will the entire village of 2000 people be infected?</li>
+                    <li>Based on your experience with past pandemics and what you've just learned from the situation above, what are your thoughts on this new disease threat?</li>
+                </ol>
+                <button class="btn-danger" style="width: 100%; padding: 12px; font-size: 1.1em;" onclick="submitNipahWorksheet()">SUBMIT</button>
+                <div id="nipahSubmitStatus" style="margin-top: 10px; text-align: center; font-style: italic; display: none;"></div>
+            </div>
+
+            <div class="info-card" style="background: #fafaf9; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                    <label for="worksheetUpload" style="cursor: pointer; text-align: center; width: 80%; padding: 40px 20px; border: 2px dashed #94a3b8; border-radius: 12px; background: white; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                        <div style="font-size: 48px; color: #94a3b8; margin-bottom: 10px;">☁️</div>
+                        <div style="color: #64748b; font-weight: bold;">Upload your worksheet</div>
+                        <div id="uploadFileName" style="margin-top: 15px; font-size: 0.9em; color: var(--primary); word-break: break-all;"></div>
+                    </label>
+                    <input type="file" id="worksheetUpload" accept="image/*,application/pdf" style="display: none;" onchange="updateFileName(this)">
+                </div>
+                <button class="btn-success" onclick="finishAll()" style="width: 100%; padding: 12px; font-size: 1.1em; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    🏆 COMPLETE PROGRAM
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- CHATBOT -->
 <div class="chat-btn" onclick="toggleChat()">💬</div>
 <div id="chatWindow" class="chat-window">
     <div class="chat-header">
@@ -935,14 +955,14 @@
     // ==========================================
     const apiKey = ""; 
     
-    // Exec URL link
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzch_1jTsXXiAXccEaWhzQpAixQuHXSPd8aDoq2rP-jXz_1JRPAoOgf1dXzSfxcLe5vsw/exec'; 
+    // DÁN URL ỨNG DỤNG WEB CỦA BẠN (APPS SCRIPT) VÀO ĐÂY
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTKvZGD5QWx4YMVg1OFbagvSjMDaphUmHDNx6KwC6M4WzB6HBVNolmWEvBjb6oL1-6Rw/exec'; 
     
     let state = {
-        name: '', id: '', startTime: null, mode: 1,
+        name: '', id: '', studentClass: '', startTime: null, mode: 1,
         currentTab: 'tab1', tabsDone: {t1:false, t2:false, t3:false, t4:false, t5:false},
         t1_gen: 0, t1_data: [],
-        aiWelcome: { t1: false, t2: false } // Biến theo dõi AI đã chào chưa
+        aiWelcome: { t1: false, t2: false, t3: false, t4: false, t5: false } 
     };
     
     let charts = { spread: null, prevention: null, vaccine: null };
@@ -951,16 +971,16 @@
     // CORE FUNCTIONS & LOGGING
     // ==========================================
     function logAction(action, detail, finishTime = null, fileData = null, fileName = null) {
-        if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
-            console.error("Missing GOOGLE_SCRIPT_URL");
+        if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbzTKvZGD5QWx4YMVg1OFbagvSjMDaphUmHDNx6KwC6M4WzB6HBVNolmWEvBjb6oL1-6Rw/exec")) {
+            console.error("Bạn chưa điền GOOGLE_SCRIPT_URL");
             return;
         }
 
         const params = new URLSearchParams();
         
-        // Đổi key sang tiếng Anh để khớp chính xác với script lấy dữ liệu (p.StudentName, p.ID, p.Action, p.Detail)
         params.append("StudentName", state.name); 
         params.append("ID", state.id);
+        params.append("Class", state.studentClass); // Đã thêm Lớp học
         params.append("Action", action); 
         params.append("Detail", detail);
         
@@ -968,8 +988,9 @@
             params.append("Duration", finishTime);
         }
         if(fileData) {
-            params.append("fileData", fileData);
+            params.append("FileBase64", fileData);
             params.append("fileName", fileName);
+            // MimeType is handled automatically or dynamically in App Script
         }
 
         fetch(GOOGLE_SCRIPT_URL, {
@@ -981,12 +1002,12 @@
             body: params
         }).then(() => {
             console.log(`Sent data [${action}] to Google Sheet.`);
-            if(action === 'Submit Tab 1 Exercise' || action === 'Submit') {
+            if(action === 'Submit Tab 1 Exercise' || action === 'Submit' || action === 'Submit Nipah Worksheet' || action === 'Submit Final Solution Tab 2') {
                 document.getElementById('submitStatus') && (document.getElementById('submitStatus').innerText = "✅ Data successfully sent!");
             }
         }).catch(err => {
             console.error("Data submission error:", err);
-            if(action === 'Submit Tab 1 Exercise' || action === 'Submit') {
+            if(action === 'Submit Tab 1 Exercise' || action === 'Submit' || action === 'Submit Nipah Worksheet') {
                 document.getElementById('submitStatus') && (document.getElementById('submitStatus').innerText = "❌ Connection error! Please check your network.");
             }
         });
@@ -995,9 +1016,11 @@
     function handleLogin(mode) {
         state.name = document.getElementById('studentName').value;
         state.id = document.getElementById('studentID').value;
-        if(!state.name || !state.id) return alert("Please enter all required information (Name and ID) before proceeding!");
+        state.studentClass = document.getElementById('studentClass').value;
+
+        if(!state.name || !state.id || !state.studentClass) return alert("Please enter all required information (Name, Class, and ID) before proceeding!");
         
-        state.mode = mode; // Mode 1 (Researcher) or 2 (Fighter)
+        state.mode = mode; 
 
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('userInfoBar').style.display = 'flex';
@@ -1006,22 +1029,20 @@
         document.getElementById('displayMode').innerText = mode === 1 ? "Researcher" : "Pandemic Fighter";
         document.getElementById('displayName').innerText = state.name;
         document.getElementById('displayID').innerText = state.id;
+        document.getElementById('displayClass').innerText = state.studentClass;
+        
         state.startTime = new Date();
         setInterval(updateTimer, 1000);
         
-        // UI Configuration by mode
+        // Cấu hình Tab UI
         if(mode === 1) { 
             document.querySelector('[data-tab="tab1"]').style.display = 'block';
             document.querySelector('[data-tab="tab1"]').innerText = 'PART 1: VIRAL REPLICATION';
-            
             document.querySelector('[data-tab="tab2"]').style.display = 'block';
             document.querySelector('[data-tab="tab2"]').innerText = 'PART 2: COMMUNITY SPREAD';
-            
             document.querySelector('[data-tab="tab3"]').style.display = 'block';
             document.querySelector('[data-tab="tab3"]').innerText = 'PART 3: PREVENTION (5K)';
-            
             document.querySelector('[data-tab="tab4"]').style.display = 'none';
-            
             document.querySelector('[data-tab="tab5"]').style.display = 'none';
             
             switchTab('tab1');
@@ -1030,18 +1051,15 @@
             document.getElementById('btn-next-t3').innerText = "🏆 COMPLETE PROGRAM";
             document.getElementById('btn-next-t3').classList.replace('btn-primary', 'btn-success');
         } else if(mode === 2) { 
-            document.querySelector('[data-tab="tab1"]').style.display = 'block';
-            document.querySelector('[data-tab="tab1"]').innerText = 'PART 1: VIRAL REPLICATION';
-            
+            document.querySelector('[data-tab="tab1"]').style.display = 'none';
             document.querySelector('[data-tab="tab2"]').style.display = 'none';
             document.querySelector('[data-tab="tab3"]').style.display = 'none';
             document.querySelector('[data-tab="tab4"]').style.display = 'none';
             
             document.querySelector('[data-tab="tab5"]').style.display = 'block';
-            document.querySelector('[data-tab="tab5"]').innerText = 'PART 2: NIPAH VIRUS';
+            document.querySelector('[data-tab="tab5"]').innerText = 'NIPAH VIRUS RESEARCH';
             
-            switchTab('tab1');
-            document.getElementById('btn-next-t1').innerText = "Proceed to Part 2 →";
+            switchTab('tab5');
         }
 
         let modeName = mode === 1 ? "Researcher" : "Pandemic Fighter";
@@ -1063,19 +1081,23 @@
         document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         state.currentTab = tabId;
 
-        // BẬT AI CHÀO MỪNG KHI VÀO TAB MỚI LẦN ĐẦU TIÊN
-        if (state.mode === 1) {
-            if (tabId === 'tab1' && !state.aiWelcome.t1) {
-                state.aiWelcome.t1 = true;
-                setTimeout(() => {
-                    sendBotMessage("🤖 **Dr. GeoBot:** Welcome, Researcher! Your mission today is to interact with infection models, record data, and answer questions to uncover new knowledge. Let's start with Tab 1!", true);
-                }, 1500);
-            } 
-            else if (tabId === 'tab2' && !state.aiWelcome.t2) {
-                state.aiWelcome.t2 = true;
-                setTimeout(() => {
-                    sendBotMessage("🤖 **Dr. GeoBot:** Excellent, we are now on Tab 2! Here we will simulate the real-world spread of a virus.\n\nLooking at the scenario above, input the F0, R0, and Cycle values into the table. Then click CALCULATE to observe the graph!\n\nNote: There are multiple exercise phases, and you must answer the final questions of each phase **correctly** to unlock the next one!", true);
-                }, 1000);
+        // BẬT AI CHÀO MỪNG TÙY THEO TAB
+        if (!state.aiWelcome[tabId]) {
+            state.aiWelcome[tabId] = true;
+            let msg = "";
+            
+            if (tabId === 'tab1') {
+                msg = "🤖 **Dr. GeoBot:** Welcome to Part 1! Set the initial viruses and replication factor, then press **START CYCLE** to observe exponential growth. Don't forget to complete the exercise below!";
+            } else if (tabId === 'tab2') {
+                msg = "🤖 **Dr. GeoBot:** Excellent! Now in Part 2, we look at community spread. Input the parameters and click **CALCULATE** to see the total infections graph. You must answer each Phase correctly to unlock the next one!";
+            } else if (tabId === 'tab3') {
+                msg = "🤖 **Dr. GeoBot:** Welcome to Part 3! Compare how safety measures (5K) flatten the curve. Drag and drop the correct values to forecast infections, and find the limit formula!";
+            } else if (tabId === 'tab5') {
+                msg = "🤖 **Dr. GeoBot:** Welcome to the Nipah Virus Challenge! Watch the video, analyze the parameters (u1, q), write down your solution, and upload your Worksheet. I'm here if you need hints!";
+            }
+            
+            if (msg) {
+                setTimeout(() => { sendBotMessage(msg, true); }, 1000);
             }
         }
     }
@@ -1138,7 +1160,6 @@
         document.getElementById('hostCell').innerHTML = '<div style="color: #475569; text-align: center;">(Press Start to view under microscope)</div>';
         document.querySelector('#replicationTable tbody').innerHTML = '';
         document.getElementById('t1_conclusion').style.display = 'none';
-        
         document.querySelectorAll('#tab1 input.fill-blank, #tab1 select.fill-blank').forEach(i => i.value = '');
         document.querySelectorAll('#tab1 input[type="radio"]').forEach(i => i.checked = false);
         document.getElementById('ex_result_tab1').style.display = 'none';
@@ -1200,11 +1221,7 @@
     function completeTab1() {
         state.tabsDone.t1 = true;
         document.querySelector('[data-tab="tab1"]').classList.add('completed');
-        if (state.mode === 1) {
-            switchTab('tab2');
-        } else if (state.mode === 2) {
-            switchTab('tab5');
-        }
+        if (state.mode === 1) switchTab('tab2');
     }
 
     // ==========================================
@@ -1262,18 +1279,14 @@
         const q4 = document.getElementById('t2_q4').value.trim();
         const q4_lower = q4.toLowerCase();
         
-        // KIỂM TRA ĐÁP ÁN CÂU CHỐT (Q4)
         if (!q4_lower.includes("geometric") && !q4_lower.includes("cấp số nhân")) {
             const resDiv = document.getElementById('ex_result_t2_p1');
-            resDiv.style.display = 'block';
-            resDiv.className = 'inline-alert alert-error'; 
-            resDiv.style.backgroundColor = '#fee2e2'; 
-            resDiv.style.borderColor = '#fca5a5';
-            resDiv.style.color = '#991b1b';
+            resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-error'; 
+            resDiv.style.backgroundColor = '#fee2e2'; resDiv.style.borderColor = '#fca5a5'; resDiv.style.color = '#991b1b';
             resDiv.innerHTML = `❌ Incorrect answer for Question 4. Please check Dr. GeoBot's message!`;
             
             sendBotMessage("🤖 **Dr. GeoBot:** Your answer for Question 4 (the final question of Phase 1) is incorrect. Please try again! \n\n*Hint: What do we call a sequence where each term after the first is found by multiplying the previous one by a constant? (Geometric...)*", true);
-            return; // Dừng lại, không mở khóa Phase 2
+            return; 
         }
 
         const q1 = document.getElementById('t2_q1').value || "?";
@@ -1288,20 +1301,14 @@
         logAction('Submit Tab 2 Phase 1', detail);
 
         const resDiv = document.getElementById('ex_result_t2_p1');
-        resDiv.style.display = 'block';
-        resDiv.className = 'inline-alert alert-success'; 
-        resDiv.style.backgroundColor = '#e0f2fe'; 
-        resDiv.style.borderColor = '#7dd3fc';
-        resDiv.style.color = '#0284c7';
+        resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-success'; 
+        resDiv.style.backgroundColor = '#e0f2fe'; resDiv.style.borderColor = '#7dd3fc'; resDiv.style.color = '#0284c7';
         resDiv.innerHTML = `✅ Phase 1 answers submitted successfully. Phase 2 is now unlocked!`;
         
         sendBotMessage("🤖 **Dr. GeoBot:** Excellent! You answered Phase 1 correctly. Let's continue deciphering Phase 2 appearing below!", true);
 
-        // Unlock Phase 2
         document.getElementById('t2_phase2_container').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('t2_phase2_container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
+        setTimeout(() => { document.getElementById('t2_phase2_container').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
     }
     
     function submitPhase2() {
@@ -1313,21 +1320,17 @@
             document.getElementById('t2_q7_eq5').value
         ];
         
-        // KIỂM TRA ĐÁP ÁN CÂU CHỐT (Q7) - Phải chứa đủ 5 option tương ứng với khai triển cấp số nhân
         const correctEqs = ["u1+", "u1.q+", "u1.q2+", "u1.q3+", "u1.q4"];
         const isQ7Correct = correctEqs.every(val => q7_eqs.includes(val));
 
         if (!isQ7Correct) {
             const resDiv = document.getElementById('ex_result_t2_p2');
-            resDiv.style.display = 'block';
-            resDiv.className = 'inline-alert alert-error'; 
-            resDiv.style.backgroundColor = '#fee2e2'; 
-            resDiv.style.borderColor = '#fca5a5';
-            resDiv.style.color = '#991b1b';
+            resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-error'; 
+            resDiv.style.backgroundColor = '#fee2e2'; resDiv.style.borderColor = '#fca5a5'; resDiv.style.color = '#991b1b';
             resDiv.innerHTML = `❌ Incorrect answer for Question 7. Please check Dr. GeoBot's message!`;
             
             sendBotMessage("🤖 **Dr. GeoBot:** Your answer for Question 7 (the final question of Phase 2) is incorrect. Please try again! \n\n*Hint: Look at the results from Question 6, replace S_5 using u1 and q, then arrange them in increasing order of q's exponent: from u1 (no q), to u1.q^1, u1.q^2... Note that the final term does not have a + sign at the end.*", true);
-            return; // Dừng lại, không mở khóa Phase 3
+            return; 
         }
 
         const u1 = document.getElementById('t2_q5_u1').value || "?";
@@ -1353,37 +1356,27 @@
         logAction('Submit Tab 2 Phase 2', detail);
 
         const resDiv = document.getElementById('ex_result_t2_p2');
-        resDiv.style.display = 'block';
-        resDiv.className = 'inline-alert alert-success'; 
-        resDiv.style.backgroundColor = '#f3e8ff'; 
-        resDiv.style.borderColor = '#d8b4fe';
-        resDiv.style.color = '#7e22ce';
+        resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-success'; 
+        resDiv.style.backgroundColor = '#f3e8ff'; resDiv.style.borderColor = '#d8b4fe'; resDiv.style.color = '#7e22ce';
         resDiv.innerHTML = `✅ Phase 2 answers submitted successfully. Phase 3 is now unlocked!`;
         
         sendBotMessage("🤖 **Dr. GeoBot:** Spot on! You have completed Phase 2. Keep it up, we are just one step away from finding the general formula in Phase 3!", true);
 
-        // Unlock Phase 3
         document.getElementById('t2_phase3_container').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('t2_phase3_container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
+        setTimeout(() => { document.getElementById('t2_phase3_container').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
     }
 
     function submitPhase3() {
         const q10 = document.querySelector('input[name="t2_q10"]:checked') ? document.querySelector('input[name="t2_q10"]:checked').value : "?";
 
-        // KIỂM TRA ĐÁP ÁN CÂU CHỐT (Q10) - Điều kiện q != 1
         if (q10 !== "q_neq_1") {
             const resDiv = document.getElementById('ex_result_t2_p3');
-            resDiv.style.display = 'block';
-            resDiv.className = 'inline-alert alert-error'; 
-            resDiv.style.backgroundColor = '#fee2e2'; 
-            resDiv.style.borderColor = '#fca5a5';
-            resDiv.style.color = '#991b1b';
+            resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-error'; 
+            resDiv.style.backgroundColor = '#fee2e2'; resDiv.style.borderColor = '#fca5a5'; resDiv.style.color = '#991b1b';
             resDiv.innerHTML = `❌ Incorrect answer for Question 10. Please check Dr. GeoBot's message!`;
             
             sendBotMessage("🤖 **Dr. GeoBot:** Your answer for Question 10 (the final question of Phase 3) is incorrect. Please try again! \n\n*Hint: A fraction is only meaningful when its DENOMINATOR is not equal to 0. In the formula for S_n you just found, the denominator is (1 - q), so what must q not be equal to?*", true);
-            return; // Dừng lại, không mở khóa Phase 4
+            return; 
         }
 
         const q8 = document.querySelector('input[name="t2_q8"]:checked') ? document.querySelector('input[name="t2_q8"]:checked').value : "?";
@@ -1393,20 +1386,14 @@
         logAction('Submit Tab 2 Phase 3', detail);
 
         const resDiv = document.getElementById('ex_result_t2_p3');
-        resDiv.style.display = 'block';
-        resDiv.className = 'inline-alert alert-success'; 
-        resDiv.style.backgroundColor = '#ffedd5'; 
-        resDiv.style.borderColor = '#fdba74';
-        resDiv.style.color = '#c2410c';
+        resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-success'; 
+        resDiv.style.backgroundColor = '#ffedd5'; resDiv.style.borderColor = '#fdba74'; resDiv.style.color = '#c2410c';
         resDiv.innerHTML = `✅ Phase 3 answers submitted successfully. The final part is now unlocked!`;
         
         sendBotMessage("🤖 **Dr. GeoBot:** Congratulations on successfully building the mathematical formula yourself! Scroll down to see the final summary.", true);
 
-        // Unlock Phase 4
         document.getElementById('t2_phase4_container').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('t2_phase4_container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 300);
+        setTimeout(() => { document.getElementById('t2_phase4_container').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
     }
 
     function submitFinalSolution() {
@@ -1417,32 +1404,23 @@
             const file = fileInput.files[0];
             const reader = new FileReader();
             
-            resDiv.style.display = 'block';
-            resDiv.className = 'inline-alert';
-            resDiv.style.backgroundColor = '#fef3c7';
-            resDiv.style.color = '#b45309';
+            resDiv.style.display = 'block'; resDiv.className = 'inline-alert'; resDiv.style.backgroundColor = '#fef3c7'; resDiv.style.color = '#b45309';
             resDiv.innerHTML = `⏳ Processing and uploading file...`;
 
             reader.onload = function(e) {
-                // e.target.result is the Base64 string of the file
-                const base64Data = e.target.result; 
-                
-                // You can pass this base64Data to your Apps Script via logAction
-                logAction('Submit Final Solution', 'Uploaded file', null, base64Data, file.name);
+                const base64Data = e.target.result.split(',')[1]; 
+                logAction('Submit Final Solution Tab 2', 'Uploaded file', null, base64Data, file.name);
                 
                 resDiv.className = 'inline-alert alert-success'; 
-                resDiv.style.backgroundColor = '#dcfce7';
-                resDiv.style.color = '#166534';
+                resDiv.style.backgroundColor = '#dcfce7'; resDiv.style.color = '#166534';
                 resDiv.innerHTML = `✅ File "<b>${file.name}</b>" submitted successfully!`;
             };
             
-            reader.readAsDataURL(file); // Converts file to Base64
+            reader.readAsDataURL(file); 
         } else {
             logAction('Submit Final Solution', 'No file uploaded');
-            resDiv.style.display = 'block';
-            resDiv.className = 'inline-alert alert-success'; 
-            resDiv.style.backgroundColor = '#dcfce7';
-            resDiv.style.color = '#166534';
+            resDiv.style.display = 'block'; resDiv.className = 'inline-alert alert-success'; 
+            resDiv.style.backgroundColor = '#dcfce7'; resDiv.style.color = '#166534';
             resDiv.innerHTML = `✅ Submitted without a file.`;
         }
     }
@@ -1454,168 +1432,134 @@
     }
 
     // ==========================================
-    // TAB 3: PREVENTION
+    // TAB 3: PREVENTION & CONTROL (5K)
     // ==========================================
-    function updateComplianceLabel() {
-        const val = document.getElementById('complianceLevel').value;
-        const labels = ["Very Poor (q=4)", "Average (q=3)", "Good (q=2)", "Excellent (q=1.2)"];
-        document.getElementById('complianceLabel').innerText = labels[val-1];
-    }
-
-    function comparePrevention() {
-        const qA = 5;
-        const val = parseInt(document.getElementById('complianceLevel').value);
-        const qB_map = [4, 3, 2, 1.2];
-        const qB = qB_map[val-1];
-        
-        const n = 6;
-        let dataA = [], dataB = [], labels = [];
-        let curA = 1, curB = 1;
-
-        for(let i=0; i<=n; i++) {
-            labels.push(`Cyc ${i}`);
-            dataA.push(curA);
-            dataB.push(curB);
-            curA *= qA;
-            curB *= qB;
-        }
-
-        const ctx = document.getElementById('preventionChart').getContext('2d');
-        if(charts.prevention) charts.prevention.destroy();
-        charts.prevention = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    { label: 'Country A (No 5K)', data: dataA, borderColor: '#ef4444', borderDash: [5,5] },
-                    { label: 'Country B (With Measures)', data: dataB, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true }
-                ]
-            },
-            options: { scales: { y: { beginAtZero: true } } }
-        });
-        
-        document.getElementById('preventionConclusion').innerText = 
-            `Observation: Country A's curve (red) skyrockets exponentially. Country B (green) has significantly flattened the curve using safety measures.`;
-            
-        logAction('Compare Prevention Measures', `Compliance Level: ${val} (qB=${qB})`);
-    }
-
-    async function generateAiScenario() {
-        const btn = document.getElementById('btnAiScenario');
-        const box = document.getElementById('aiScenarioBox');
-        
-        btn.disabled = true;
-        btn.innerHTML = '✨ AI is analyzing data...';
-        
-        const systemPrompt = `You are an epidemiologist. Generate 1 short scenario (1 sentence) about a viral outbreak in a specific location (school, market, office) and ask for a calculation. 
-        JSON Format: {"text": "..."}. Example: At a wholesale market, 1 Patient Zero infects 4 people per day...`;
-        
-        try {
-            const res = await callGeminiAPI("Generate new scenario", systemPrompt);
-            const jsonStr = res.replace(/```json|```/g, '').trim();
-            const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
-            const validJson = jsonMatch ? jsonMatch[0] : jsonStr;
-            const data = JSON.parse(validJson);
-            document.getElementById('aiScenarioText').innerText = data.text;
-            box.style.display = 'block';
-        } catch(e) {
-            console.error(e);
-            alert("AI Connection Error: " + e.message);
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '✨ AI: Generate new epidemiological scenario';
-        }
-    }
     
+    // Drag & Drop logic for Tab 3
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.innerText.trim()); }
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        if(ev.target.classList.contains('drop-zone')) {
+            ev.target.innerText = data;
+            ev.target.classList.add('filled');
+            ev.target.dataset.value = data; 
+        }
+    }
+
+    function checkExerciseTab3() {
+        const q1 = document.getElementById('t3_q1').value || "?";
+        const mcq2 = document.querySelector('input[name="t3_q2"]:checked'); const q2 = mcq2 ? mcq2.value : "Not selected";
+        const q3_u2 = document.getElementById('dz_u2').dataset.value || "?";
+        const q3_u3 = document.getElementById('dz_u3').dataset.value || "?";
+        const q3_u5 = document.getElementById('dz_u5').dataset.value || "?";
+        const q4 = document.getElementById('t3_q4').value || "?";
+
+        let score = 0, total = 4, feedback = "<ul>";
+        
+        if (q1 === "1280") { score++; feedback += "<li><span style='color:green'>Q1: Correct!</span> u5 = 5 × 4⁴ = 1280.</li>"; } 
+        else { feedback += "<li><span style='color:red'>Q1: Incorrect.</span> Remember u5 = u1 × q⁴.</li>"; }
+        
+        if (q2 === "C") { score++; feedback += "<li><span style='color:green'>Q2: Correct!</span> S6 = 728.</li>"; } 
+        else { feedback += "<li><span style='color:red'>Q2: Incorrect.</span> Check the geometric series sum formula.</li>"; }
+
+        if (q3_u2 === "8000" && q3_u3 === "4000" && q3_u5 === "1000") { score++; feedback += "<li><span style='color:green'>Q3: Correct!</span> Sequence matched perfectly.</li>"; } 
+        else { feedback += "<li><span style='color:red'>Q3: Incorrect.</span> Remember Week 5 = 1000 (skipping Week 4).</li>"; }
+
+        if (q4 === "31000") { score++; feedback += "<li><span style='color:green'>Q4: Correct!</span> S5 = 16000 × (1 - 0.5⁵) / (1 - 0.5) = 31000.</li>"; } 
+        else { feedback += "<li><span style='color:red'>Q4: Incorrect.</span> Apply the standard sum formula for n=5.</li>"; }
+
+        feedback += "</ul>";
+        logAction('Submit Tab 3 Phase 1', `Score: ${score}/4`);
+
+        const resDiv = document.getElementById('ex_result_tab3');
+        resDiv.style.display = 'block';
+        
+        if (score === total) {
+            resDiv.className = 'inline-alert alert-success'; 
+            resDiv.innerHTML = `<strong>🎉 PERFECT SCORE! (${score}/${total})</strong><br> You have perfectly calculated the infections using the standard formula. Let's see what happens next!<br>` + feedback;
+            
+            document.getElementById('phase2_section').style.display = 'block';
+            document.getElementById('btn_submit_tab3').style.display = 'none';
+        } else {
+            resDiv.className = 'inline-alert alert-error'; 
+            resDiv.style.backgroundColor = '#fffbeb'; resDiv.style.borderColor = '#fde68a'; resDiv.style.color = '#92400e';
+            resDiv.innerHTML = `<strong>⚠️ KEEP TRYING! (${score}/${total})</strong><br> Review your answers below:<br>` + feedback;
+            sendBotMessage("🤖 **Dr. GeoBot:** Some of your answers in Part 3 are incorrect. Please review the feedback and try again!", true);
+        }
+    }
+
+    function checkPhase2() {
+        const q5 = document.getElementById('t3_q5').value || "?";
+        const resDiv = document.getElementById('ex_result_phase2');
+        resDiv.style.display = 'block';
+
+        if(q5 === "32000") {
+            resDiv.className = 'inline-alert alert-success';
+            resDiv.innerHTML = `<strong>🏆 OUTSTANDING!</strong><br> Using the infinite decreasing geometric sequence formula, S = 16000 / 0.5 = 32000.<br><br>Notice how the 5-week total (31,000) is already very close to the absolute maximum limit forever (32,000)! This proves that maintaining q < 1 effectively stops the epidemic from growing out of control.`;
+            logAction('Submit Tab 3 Phase 2', 'Correct 32000');
+            
+            document.getElementById('btn-next-t3').style.display = 'block';
+        } else {
+            resDiv.className = 'inline-alert alert-error';
+            resDiv.style.backgroundColor = '#fffbeb'; resDiv.style.borderColor = '#fde68a'; resDiv.style.color = '#92400e';
+            resDiv.innerHTML = `<strong>⚠️ INCORRECT.</strong><br> Apply the formula S = u1 / (1 - q) with u1 = 16000 and q = 0.5.`;
+            logAction('Submit Tab 3 Phase 2', `Incorrect: ${q5}`);
+            sendBotMessage("🤖 **Dr. GeoBot:** Your answer for the infinite sum is not quite right. S = u1 / (1-q). Try plugging the numbers in again!", true);
+        }
+    }
+
     function completeTab3() {
-        state.tabsDone.t3 = true;
+        state.tabsDone.t3 = true; 
         document.querySelector('[data-tab="tab3"]').classList.add('completed');
         if (state.mode === 1) finishAll(); 
     }
 
     // ==========================================
-    // TAB 4: VACCINATION
+    // TAB 5: NIPAH & WORKSHEET SUBMISSION
     // ==========================================
-    function simulateVaccine() {
-        let load = 1000000;
-        let hours = 0;
-        let labels = [0];
-        let data = [load];
-        const threshold = 100;
-
-        while(load > threshold) {
-            hours++;
-            load = load * 0.5; // q = 0.5
-            labels.push(hours);
-            data.push(load);
-            if(hours > 50) break;
+    
+    function updateFileName(input) {
+        const fileNameDisplay = document.getElementById('uploadFileName');
+        if (input.files && input.files.length > 0) {
+            fileNameDisplay.innerHTML = `📄 ${input.files[0].name}`;
+            fileNameDisplay.style.color = '#10b981'; 
+        } else {
+            fileNameDisplay.innerHTML = '';
         }
-        
-        document.getElementById('vaccineResult').innerHTML = 
-            `✅ RESULT: After <span style="font-size:1.5em; color:darkblue">${hours}</span> hours, the viral load decreased to ${Math.floor(load)}. <br>The immune system has successfully controlled the situation!`;
-        document.getElementById('vaccineResult').style.backgroundColor = '#dcfce7';
-
-        const ctx = document.getElementById('vaccineChart').getContext('2d');
-        if(charts.vaccine) charts.vaccine.destroy();
-        charts.vaccine = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Viral Load (q=0.5)',
-                    data: data,
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                plugins: {
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: threshold,
-                                yMax: threshold,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                label: { content: 'Safe Threshold', enabled: true }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        
-        logAction('Simulate Vaccine', `Completed after ${hours} hours`);
     }
 
-    function completeTab4() {
-        state.tabsDone.t4 = true;
-        document.querySelector('[data-tab="tab4"]').classList.add('completed');
-        if (state.mode === 2) switchTab('tab5'); 
-    }
-
-    // ==========================================
-    // TAB 5: NIPAH
-    // ==========================================
-    function checkNipah(choice) {
-        const divSuccess = document.getElementById('nipahResultSuccess');
-        const divError = document.getElementById('nipahResultError');
+    function submitNipahWorksheet() {
+        const fileInput = document.getElementById('worksheetUpload');
+        const statusDiv = document.getElementById('nipahSubmitStatus');
         
-        divSuccess.style.display = 'none';
-        divError.style.display = 'none';
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert("Vui lòng tải lên worksheet của bạn trước khi Submit!");
+            return;
+        }
 
-        if(choice === true) {
-            divSuccess.style.display = 'block';
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        statusDiv.style.display = 'block';
+        statusDiv.style.color = '#0284c7';
+        statusDiv.innerText = "⏳ Đang gửi file lên hệ thống...";
+
+        reader.onload = function(e) {
+            // Lấy chuỗi Base64
+            const base64Data = e.target.result.split(',')[1]; 
+
+            // Gọi hàm logAction đã tích hợp sẵn hỗ trợ Base64
+            logAction('Submit Nipah Worksheet', 'Uploaded file', null, base64Data, file.name);
+            
+            statusDiv.style.color = '#10b981';
+            statusDiv.innerText = "✅ Đã nộp thành công!";
             state.tabsDone.t5 = true;
             document.querySelector('[data-tab="tab5"]').classList.add('completed');
-            logAction('Answer Nipah Question', 'Correct (Selected YES)');
-        } else {
-            divError.style.display = 'block';
-            logAction('Answer Nipah Question', 'Incorrect (Selected NO)');
-        }
+        };
+        
+        reader.readAsDataURL(file); 
     }
 
     function finishAll() {
@@ -1624,12 +1568,8 @@
                 alert("Please complete parts 1, 2, and 3 first!"); return;
             }
         } else if (state.mode === 2) {
-            if(!state.tabsDone.t1 || !state.tabsDone.t5) {
-                alert("Please complete parts 1 and 2 first!"); return;
-            }
-        } else {
-            if(!state.tabsDone.t1 || !state.tabsDone.t2 || !state.tabsDone.t3 || !state.tabsDone.t4 || !state.tabsDone.t5) {
-                alert("Please complete all previous parts!"); return;
+            if(!state.tabsDone.t5) {
+                alert("Vui lòng hoàn thành bài tập và tải nộp Worksheet trước khi kết thúc!"); return;
             }
         }
 
@@ -1655,8 +1595,7 @@
         const el = document.getElementById('chatWindow');
         el.style.display = el.style.display==='flex' ? 'none' : 'flex';
     }
-
-    // HÀM ĐỂ BOT TỰ GỬI TIN NHẮN (MỚI THÊM)
+    
     function sendBotMessage(text, autoOpen = true) {
         const body = document.getElementById('chatBody');
         const formattedReply = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
@@ -1714,9 +1653,7 @@
         try {
             const reply = await callGeminiAPI(txt, systemPrompt);
             document.getElementById('typingIndicator').style.display='none';
-            const formattedReply = reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-            body.innerHTML += `<div class="msg bot-msg">${formattedReply}</div>`;
-            body.scrollTop = body.scrollHeight;
+            sendBotMessage(reply, false);
         } catch (error) {
             console.error(error);
             document.getElementById('typingIndicator').style.display='none';
