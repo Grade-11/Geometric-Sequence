@@ -745,13 +745,12 @@ Let’s try to find a shortcut for this problem.
 </div>
 
 <div id="t2_phase4_container" style="display:none; margin-top: 30px; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
-<h3 style="color: var(--danger); margin-top: 0; text-align: center; font-size: 1.6em;">🎉 CONGRATULATION! YOU HAVE FOUND THE FORMULA!!!</h3>
-
-<p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px; color: var(--text-main);">
+<div style="background: #fffbeb; border: 2px solid #f59e0b; color: #b45309; padding: 25px; border-radius: 12px; text-align: center;">
+<h3 style="color: #ea580c; margin-top: 0;">🎉 CONGRATULATION! YOU HAVE FOUND THE FORMULA!!!</h3>
+<p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
 As we have determined that the equation we found can calculate the total at any cycle, then we can replace 5 with <span class="math-symbol">n</span> to obtain the formula of the sum of <span class="math-symbol">n</span> first terms of a geometric sequence:
 </p>
 
-<div class="formula-box" style="background: #fffbeb; border: 2px solid #f59e0b; color: #b45309; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);">
 Given a geometric sequence (<span class="math-symbol">u<sub>n</sub></span>) with common ratio <span class="math-symbol">q &ne; 1</span>.<br>
 Let <span class="math-symbol">S<sub>n</sub> = u<sub>1</sub> + u<sub>2</sub> + ... + u<sub>n</sub></span>, one has:<br>
 <div style="font-size: 1.5em; margin-top: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
@@ -805,6 +804,8 @@ Complete Part 2 →
 <div id="tab3" class="tab-content">
 <h2>🛡️ Prevention (5K) & Control Exercises</h2>
 <p style="color:#64748b; margin-bottom: 20px; line-height: 1.6;">
+Applying the 5K measures and Vaccines helps reduce the infection rate (<span class="math-symbol" style="white-space: nowrap;">q</span>).
+When <span class="math-symbol" style="white-space: nowrap;">q > 1</span>, the infections spread exponentially. But when we control it so <span class="math-symbol" style="white-space: nowrap;">q < 1</span>, the new infections decrease over time, forming a decreasing geometric sequence. Let's practice what you've learned!
 </p>
 
 <div class="exercise-section" style="border-top: none; margin-top: 0; padding-top: 0;">
@@ -880,7 +881,7 @@ How many <strong>new infections</strong> will be recorded exactly in the 5th inf
 <p style="color:#64748b; margin-bottom: 20px; line-height: 1.6;">
 Notice how the number of new infections drops each week? If we maintain <span class="math-symbol" style="white-space: nowrap;">q < 1</span> forever, the number of new infections will eventually approach 0. This forms an <strong>infinite decreasing geometric sequence (cấp số nhân lùi vô hạn)</strong>.
 </p>
-<div class="formula-box" style="background: #ecfdf5; border-color: #10b981; color: #065f46;">
+<div style="background: #ecfdf5; border: 2px solid #10b981; color: #065f46; padding: 25px; border-radius: 12px; text-align: center;">
 When <span class="math-symbol" style="white-space: nowrap;">n</span> is very large, <span class="math-symbol" style="white-space: nowrap;">q<sup>n</sup></span> approaches 0. The formula simplifies to:<br>
 <div style="font-size: 1.5em; margin-top: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
 <span class="math-symbol">S = </span>
@@ -951,8 +952,8 @@ When <span class="math-symbol" style="white-space: nowrap;">n</span> is very lar
     <h3>🎉 Congratulations!</h3>
     <p>You have completed <strong>Part 3: Prevention (5K)</strong>!<br>
     Click the gift box above to receive your <strong>learning report</strong> — a summary of all your answers that you can download and bring to the next class!</p>
-    <button class="btn-success" onclick="openReport()" style="font-size:1.1em; padding:12px 30px; margin-bottom:10px; width:100%;">📋 Open My Report</button>
-    <button onclick="closeGiftAndContinue()" style="background:#64748b; font-size:0.95em; padding:10px 20px; width:100%;">✅ Continue to Finish</button>
+    <button class="btn-success" onclick="openReport()" style="font-size:1.1em; padding:12px 30px; margin-bottom:10px; width:100%;">📋 Open My Comprehensive Report</button>
+    <button onclick="closeGiftAndContinue()" style="background:#64748b; font-size:0.95em; padding:10px 20px; width:100%; border:none; border-radius:8px; color:white; cursor:pointer;">✅ Continue to Finish</button>
   </div>
 </div>
 
@@ -998,10 +999,7 @@ console.error("Bạn chưa điền GOOGLE_SCRIPT_URL");
 return;
 }
 
-// BƯỚC SỬA 1: Dùng FormData thay vì URLSearchParams
-// FormData an toàn hơn khi truyền chuỗi file (Base64) dung lượng lớn mà không bị thất thoát ký tự.
 const formData = new FormData();
-
 formData.append("StudentName", state.name);
 formData.append("ID", state.id);
 formData.append("Class", state.studentClass);
@@ -1019,7 +1017,7 @@ formData.append("fileName", fileName);
 fetch(GOOGLE_SCRIPT_URL, {
 method: 'POST',
 mode: 'no-cors',
-body: formData // Bỏ thuộc tính headers, để browser tự thiết lập multipart/form-data
+body: formData 
 }).then(() => {
 console.log(`Sent data [${action}] to Google Sheet.`);
 if(action === 'Submit Tab 1 Exercise' || action === 'Submit' || action === 'Submit Nipah Worksheet' || action === 'Submit Final Solution Tab 2') {
@@ -1107,7 +1105,7 @@ msg = "🤖 **Dr. GeoBot:** Welcome to Part 1! Set the initial viruses and repli
 } else if (tabId === 'tab2') {
 msg = "🤖 **Dr. GeoBot:** Excellent! Now in Part 2, we look at community spread. Input the parameters and click **CALCULATE** to see the total infections graph. You must answer each Phase correctly to unlock the next one!";
 } else if (tabId === 'tab3') {
-msg = "🤖 **Dr. GeoBot:** Welcome to Part 3! Compare how safety measures (5K) flatten the curve. Drag and drop the correct values to forecast the total infections over time, and derive the limit formula for the sum!";
+msg = "🤖 **Dr. GeoBot:** Welcome to Part 3! Compare how safety measures (5K) flatten the curve. Apply your knowledge of the sum of an infinite geometric sequence (where |q| < 1). Drag and drop the correct values to forecast the total infections over time, and derive the limit formula for the sum!";
 } else if (tabId === 'tab5') {
 msg = "🤖 **Dr. GeoBot:** Welcome to the Nipah Virus Challenge! Watch the video, analyze the parameters (u1, q), write down your solution, and upload your Worksheet. I'm here if you need hints!";
 }
@@ -1207,7 +1205,6 @@ const q5_2 = document.getElementById('q5_2').value || "?";
 const mcq = document.querySelector('input[name="mcq_formula"]:checked');
 const q6 = mcq ? mcq.value : "Not selected";
 
-// Logic kiểm tra đáp án câu 6
 if (q6 !== "B") {
 const resDiv = document.getElementById('ex_result_tab1');
 resDiv.style.display = 'block';
@@ -1218,7 +1215,7 @@ resDiv.style.color = '#991b1b';
 resDiv.innerHTML = `❌ Incorrect answer for Question 6. Please check Dr. GeoBot's message!`;
 
 sendBotMessage("🤖 **Dr. GeoBot:** Your answer for Question 6 is incorrect. Please try again!\n\n*Hint: Look closely at your observation in Question 5. The exponent of q is always SMALLER than the index of u by exactly 1. So if the index is n, the exponent must be...*", true);
-return; // Dừng lại, không hiển thị khung tổng kết
+return; 
 }
 
 const details =
@@ -1438,7 +1435,6 @@ resDiv.style.display = 'block'; resDiv.className = 'inline-alert'; resDiv.style.
 resDiv.innerHTML = `⏳ Processing and uploading file...`;
 
 reader.onload = function(e) {
-// BƯỚC SỬA 2: Giữ nguyên TOÀN BỘ Data URL, không cắt bỏ .split(',')[1]
 const fullDataUrl = e.target.result;
 logAction('Submit Final Solution Tab 2', 'Uploaded file', null, fullDataUrl, file.name);
 
@@ -1545,17 +1541,66 @@ if (state.mode === 1) finishAll();
 function openReport() {
 document.getElementById('giftModal').style.display = 'none';
 
-// Collect all Tab 3 answers
-const q1_val = document.getElementById('t3_q1').value || "(not answered)";
-const mcq2 = document.querySelector('input[name="t3_q2"]:checked');
-const q2_val = mcq2 ? mcq2.value + (mcq2.value === 'A' ? ' — 1458 ✅' : ' (incorrect)') : "(not answered)";
-const q3_val = document.getElementById('t3_q3').value || "(not answered)";
+// Hàm hỗ trợ lấy dữ liệu an toàn, trả về tiếng Anh
+const val = (id) => document.getElementById(id) ? (document.getElementById(id).value || "(Not answered)") : "(Not answered)";
+const rad = (name) => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : "(Not answered)"; };
+const sel = (id) => {
+    const el = document.getElementById(id);
+    if(!el || el.selectedIndex === -1 || el.value === "") return "(Not selected)";
+    return el.options[el.selectedIndex].text;
+}
+
+// --- LẤY DỮ LIỆU TAB 1 ---
+const t1_u1_val = val('t1_u1');
+const t1_q_el = document.getElementById('t1_q');
+const t1_q_val = t1_q_el ? t1_q_el.value : "(Not selected)";
+
+const t1_q1 = `u₁ = ${val('q1_1')}, u₂ = ${val('q1_2')}, u₃ = ${val('q1_3')}, u₄ = ${val('q1_4')}, u₅ = ${val('q1_5')}`;
+const t1_q2 = `Ratios: u₂/u₁ = ${val('q2_1')}, u₃/u₂ = ${val('q2_2')}, u₄/u₃ = ${val('q2_3')} <br> Observation: Values are <b>${sel('q2_4')}</b>`;
+const t1_q3 = `Each term is the <b>${sel('q3_1')}</b> of the preceding term and a <b>${sel('q3_2')}</b> number q. <br> Common ratio q = <b>${val('q3_3')}</b>`;
+const t1_q4 = `u<sub>n</sub> = u<sub>n-1</sub> <b>${sel('q4_op')} ${val('q4_1')}</b>`;
+const t1_q5 = `Exponent is <b>${sel('q5_1')}</b> by <b>${val('q5_diff')}</b> unit(s). <br> Predict: u<sub>10</sub> = u<sub>1</sub> &times; q<sup>${val('q5_2')}</sup>`;
+const t1_q6_raw = rad('mcq_formula');
+const t1_q6 = t1_q6_raw !== "(Not answered)" ? `Option ${t1_q6_raw} ${t1_q6_raw === 'B' ? '✅ Correct' : '❌'}` : "(Not answered)";
+
+// --- LẤY DỮ LIỆU TAB 2 ---
+const t2_u1_val = val('t2_u1');
+const t2_q_val = val('t2_q');
+
+const t2_q1 = val('t2_q1');
+let t2_q2_meaning = rad('t2_q2_meaning');
+if (t2_q2_meaning === 'new') t2_q2_meaning = "The number of new infected people after 1 cycle.";
+else if (t2_q2_meaning === 'total') t2_q2_meaning = "The total number of infected people after 1 cycle.";
+
+const t2_q2 = `Difference: <b>${val('t2_q2_diff')}</b> <br> Represents: <b>${t2_q2_meaning}</b>`;
+const t2_q3 = `Cycle 1: 5, Cycle 2: ${val('t2_q3_2')}, Cycle 3: ${val('t2_q3_3')}, Cycle 4: ${val('t2_q3_4')}, Cycle 5: ${val('t2_q3_5')}`;
+const t2_q4 = val('t2_q4');
+const t2_q5 = `u₁ represents: <b>${sel('t2_q5_u1')}</b> <br> q represents: <b>${sel('t2_q5_q')}</b>`;
+
+const t2_q6 = `S₅ = ${sel('t2_q6_1')}, S₄ = ${sel('t2_q6_2')}, S₃ = ${sel('t2_q6_3')}, S₂ = ${sel('t2_q6_4')}, S₁ = ${sel('t2_q6_5')}`;
+const t2_q7 = `S₅ = ${sel('t2_q7_1')} <br>= ${sel('t2_q7_2')} <br>= ${sel('t2_q7_3')} <br>= ${sel('t2_q7_4')} <br>= ${sel('t2_q7_5')} <br><br> Rewritten: S₅ = ${sel('t2_q7_eq1')} ${sel('t2_q7_eq2')} ${sel('t2_q7_eq3')} ${sel('t2_q7_eq4')} ${sel('t2_q7_eq5')}`;
+const t2_q8 = rad('t2_q8') !== "(Not answered)" ? `Option ${rad('t2_q8')} ${rad('t2_q8') === 'B' ? '✅' : '❌'}` : "(Not answered)";
+const t2_q9 = rad('t2_q9') !== "(Not answered)" ? `Option ${rad('t2_q9')} ${rad('t2_q9') === 'A' ? '✅' : '❌'}` : "(Not answered)";
+
+const t2_q10_raw = rad('t2_q10');
+let t2_q10_cond = t2_q10_raw === 'q_neq_0' ? 'q &ne; 0' : (t2_q10_raw === 'q_neq_1' ? 'q &ne; 1' : '(Not answered)');
+const t2_q10 = `Condition: <b>${t2_q10_cond}</b> ${t2_q10_raw === 'q_neq_1' ? '✅ Correct' : '❌'}`;
+
+// --- LẤY DỮ LIỆU TAB 3 ---
+const q1_val = val('t3_q1');
+const q1_res = q1_val === '1280' ? '✅ Correct' : '❌ (Correct answer: 1280)';
+
+const mcq2 = rad('t3_q2');
+const q2_val = mcq2 !== "(Not answered)" ? `Option ${mcq2}` + (mcq2 === 'A' ? ' — 1458 ✅' : ' ❌') : "(Not answered)";
+
+const q3_val = val('t3_q3');
+const q3_res = q3_val === '6560' ? '✅ Correct' : '❌ (Correct answer: 6560)';
 
 const dz = ['dz_u1','dz_u2','dz_u3','dz_u4','dz_u5','dz_u6','dz_u7','dz_u8'];
 const correctDZ = ['16000','8000','4000','2000','1000','500','250','125'];
 let q4Rows = '';
 dz.forEach((id, i) => {
-const val = document.getElementById(id).dataset.value || "(empty)";
+const val = document.getElementById(id).dataset.value || "(Empty)";
 const isCorrect = val === correctDZ[i];
 q4Rows += `<tr>
   <td style="padding:8px 12px; border:1px solid #e2e8f0; font-family:'Times New Roman',serif; font-weight:bold; color:#0284c7;">u<sub>${i+1}</sub> (Week ${i+1})</td>
@@ -1568,37 +1613,52 @@ const now = new Date();
 const dateStr = now.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'});
 const timeStr = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
 
+const safeName = state.name ? state.name.replace(/\s+/g,'_') : 'Student';
+
 const reportHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Part 3 Learning Report — ${state.name}</title>
+<title>Comprehensive Learning Report — ${state.name}</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background: #f0f9ff; margin: 0; padding: 30px; color: #334155; }
-  .report-card { max-width: 750px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+  .report-card { max-width: 850px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
   .report-header { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 30px; text-align: center; }
   .report-header h1 { margin: 0 0 5px; font-size: 1.8em; }
   .report-header p { margin: 5px 0; opacity: 0.9; font-size: 0.95em; }
   .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.85em; margin: 3px; }
   .report-body { padding: 30px; }
+  
+  .section-title { color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; display: flex; align-items: center; gap: 8px; }
   .q-block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
-  .q-block h3 { margin: 0 0 10px; color: #0284c7; font-size: 1.05em; border-left: 4px solid #0ea5e9; padding-left: 10px; }
-  .q-block .answer { font-size: 1.15em; font-weight: bold; color: #1e293b; margin: 8px 0 0; padding: 10px 15px; background: white; border-radius: 6px; border: 1px solid #cbd5e1; }
+  .q-title { color: #0284c7; font-size: 1.1em; font-weight: bold; margin-bottom: 8px; display: block; }
+  .q-block p.question-text { color: #475569; font-size: 0.95em; margin: 0 0 12px; line-height: 1.5; }
+  .answer { font-size: 1.05em; color: #1e293b; margin: 0; padding: 12px 15px; background: white; border-radius: 6px; border: 1px solid #cbd5e1; }
+  
+  /* Fraction CSS */
+  .fraction { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 5px; text-align: center; }
+  .fraction .num { border-bottom: 2px solid currentColor; padding: 0 8px; }
+  .fraction .den { padding: 0 8px; }
+  
+  .math-symbol { font-family: 'Times New Roman', serif; font-style: italic; font-weight: bold; }
+
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; }
   th { background: #f1f5f9; color: #475569; padding: 10px 12px; border: 1px solid #e2e8f0; text-align: left; }
+  td { border: 1px solid #e2e8f0; padding: 8px 12px; }
+  
   .report-footer { background: #f1f5f9; padding: 20px 30px; text-align: center; color: #64748b; font-size: 0.9em; border-top: 1px solid #e2e8f0; }
   .print-btn { background: #0ea5e9; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; margin: 5px; }
   .dl-btn { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; margin: 5px; }
-  @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .report-card { box-shadow: none; } }
+  @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .report-card { box-shadow: none; max-width: 100%; } }
 </style>
 </head>
 <body>
 <div class="report-card">
   <div class="report-header">
     <div style="font-size:40px; margin-bottom:8px;">🛡️📋</div>
-    <h1>Part 3 Learning Report</h1>
-    <p><strong>PANDEMIC EXPLORER</strong> — Prevention (5K) & Control Exercises</p>
+    <h1>Comprehensive Learning Report</h1>
+    <p><strong>PANDEMIC EXPLORER</strong> — Math & Pandemics</p>
     <div style="margin-top:12px;">
       <span class="badge">👤 ${state.name}</span>
       <span class="badge">🆔 ${state.id}</span>
@@ -1608,27 +1668,130 @@ const reportHTML = `<!DOCTYPE html>
   </div>
 
   <div class="report-body">
+    
+    <!-- PART 1 -->
+    <h2 class="section-title">🔬 PART 1: VIRAL REPLICATION</h2>
     <div class="q-block">
-      <h3>Question 1 — A New Variant Appears (Short Answer)</h3>
-      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 5 and q = 4. Find the number of new infections at the 5th cycle (u₅).</p>
-      <div class="answer">Student's answer: ${q1_val} ${q1_val === '1280' ? '✅ Correct!' : q1_val !== '(not answered)' ? '❌ (Correct answer: 1280)' : ''}</div>
+      <span class="q-title">Question 1: Based on the Case Study description, configure and run the simulation. Then, fill in the quantity of viruses (u) at the corresponding cycles (n):</span>
+      <p class="question-text">Assume an experiment starting with an initial value (initial viruses) of <strong>u₁ = ${t1_u1_val}</strong> and a factor (replication rate) of <strong>q = ${t1_q_val}</strong>.</p>
+      <div class="answer">${t1_q1}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 2: Perform division to calculate the ratio between the number of viruses in a cycle compared to the cycle immediately preceding it:</span>
+      <div class="answer">${t1_q2}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 3: Based on your observations in Questions 1 and 2, fill in the blanks to complete the formal mathematical definition:</span>
+      <div class="answer">${t1_q3}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 4: Translate the definition of a geometric sequence into a mathematical formula. Express the relationship between the n-th term (u_n), its preceding term (u_{n-1}), and the common ratio q:</span>
+      <div class="answer">${t1_q4}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 5: In reality, we cannot calculate cycle by cycle forever. Let's try expressing any term solely based on u1 and q:</span>
+      <p class="question-text">Observe the exponent patterns.</p>
+      <div class="answer">${t1_q5}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 6: From the pattern above, the n-th term (u_n) of a geometric sequence can be calculated using the first term (u1) and the common ratio q with which formula?</span>
+      <div class="answer">${t1_q6}</div>
+    </div>
+    
+    <!-- EXACT MATCH TAKEAWAY TAB 1 -->
+    <div style="background: #f0f9ff; padding: 25px; border-radius: 12px; margin-top: 30px; text-align: center; border: 2px solid #0ea5e9;">
+      <div style="font-size: 1.3em; margin-bottom: 10px; color: #0284c7;">🌟 <strong>AWESOME! YOU FOUND THE PATTERN</strong></div>
+      <p style="font-size: 1em; line-height: 1.6; color: #334155; margin-bottom: 20px;">
+        Through simulation and calculations, you have discovered a special sequence in mathematics called a <strong>Geometric Sequence</strong>.
+        Starting from the second term, each term is equal to the immediately preceding term multiplied by a constant number <span class="math-symbol">q</span> (called the <strong>common ratio</strong>).
+      </p>
+      <div style="background: white; padding: 20px; border-radius: 12px; border: 2px dashed #ef4444; display: inline-block;">
+        <div style="color: #64748b; margin-bottom: 10px; font-weight: bold;">GENERAL FORMULA</div>
+        <span class="math-symbol" style="font-size: 2em; color: #ef4444;">u<sub>n</sub> = u<sub>1</sub> × q<sup>n-1</sup></span>
+      </div>
+      <p style="font-size: 0.9em; color: #64748b; margin-top: 15px;">
+        (Number of viruses at cycle n = Initial quantity × Replication factor to the power of n-1)
+      </p>
     </div>
 
+    <!-- PART 2 -->
+    <h2 class="section-title">🌍 PART 2: COMMUNITY SPREAD</h2>
     <div class="q-block">
-      <h3>Question 2 — Number of Infections at Cycle 7 (Multiple Choice)</h3>
-      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 2, q = 3. Find u₇.</p>
-      <div class="answer">Student's answer: ${q2_val}</div>
+      <span class="q-title">Question 1 & 2: At the fifth cycle, how many infected people in total are there in the city? What is the difference between the number of total infected people at Cycle 1 and Cycle 2?</span>
+      <p class="question-text">Given the initial number of F₀: <strong>u₁ = ${t2_u1_val}</strong> and the infection rate <strong>R₀ (q) = ${t2_q_val}</strong>.</p>
+      <div class="answer">Total at C5: <b>${t2_q1}</b> <br><br> ${t2_q2}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 3 & 4: Can you list the number of new infected people after each infection cycle, starting from cycle 1? Can you name this sequence with the related one?</span>
+      <div class="answer">${t2_q3} <br><br> Sequence Name: <b>${t2_q4}</b></div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 5: What is the first term and common ratio of the geometric sequence that represents the number of new infected people after each cycle?</span>
+      <div class="answer">${t2_q5}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 6 to 10: Mathematical Derivation of Sum Formula</span>
+      <p class="question-text">Match equations, rewrite using <span class="math-symbol">u<sub>1</sub></span> & <span class="math-symbol">q</span>, subtract expressions, and simplify to find the sum formula.</p>
+      <div class="answer" style="line-height: 1.8;">
+        <b>Q6. Match Expressions:</b><br> ${t2_q6}<br>
+        <b>Q7. Connect & Rewrite:</b><br> ${t2_q7}<br>
+        <b>Q8. Multiply by q:</b><br> ${t2_q8}<br>
+        <b>Q9. Subtract:</b><br> ${t2_q9}<br>
+        <b>Q10. Condition:</b><br> ${t2_q10}
+      </div>
+    </div>
+    
+    <!-- EXACT MATCH TAKEAWAY TAB 2 -->
+    <div style="background: #fffbeb; border: 2px solid #f59e0b; color: #b45309; padding: 25px; border-radius: 12px; margin-top: 30px; text-align: center;">
+      <h3 style="color: #ea580c; margin-top: 0;">🎉 CONGRATULATION! YOU HAVE FOUND THE FORMULA!!!</h3>
+      <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 20px;">
+        As we have determined that the equation we found can calculate the total at any cycle, then we can replace 5 with <span class="math-symbol">n</span> to obtain the formula of the sum of <span class="math-symbol">n</span> first terms of a geometric sequence:
+      </p>
+      Given a geometric sequence (<span class="math-symbol">u<sub>n</sub></span>) with common ratio <span class="math-symbol">q &ne; 1</span>.<br>
+      Let <span class="math-symbol">S<sub>n</sub> = u<sub>1</sub> + u<sub>2</sub> + ... + u<sub>n</sub></span>, one has:<br>
+      <div style="font-size: 1.5em; margin-top: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
+        <span class="math-symbol">S<sub>n</sub> = u<sub>1</sub> &times; </span>
+        <div class="fraction">
+          <span class="num math-symbol">1 - q<sup>n</sup></span>
+          <span class="den math-symbol">1 - q</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- IMAGE AND TEXT ADDITION FOR TAB 2 -->
+    <div style="margin-top: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 12px;">
+      <h3 style="color: #15803d; margin-top: 0; font-size: 1.2em;">💡 The meaning of the formula:</h3>
+      <p style="font-size: 1.05em; line-height: 1.6; color: #166534;">
+        It represents the mathematical law of accumulation through compounding: <span class="math-symbol">q<sup>n</sup></span> represents the total growth factor after <span class="math-symbol">n</span> steps. It tells you how many times larger the last "potential" term has become compared to the start. This is why geometric sums grow so explosively - the <span class="math-symbol">n</span> is in the exponent.
+      </p>
+      <div style="text-align: center; margin: 20px 0; padding: 15px; background: white; border-radius: 8px; border: 1px solid #dcfce7;">
+        <img src="unnamed (19).png" alt="Exponential vs Linear Growth" style="max-width: 100%; max-height: 350px; border-radius: 8px;" onerror="this.src='https://via.placeholder.com/600x400?text=Graph:+Exponential+vs+Linear+Growth'">
+      </div>
+      <p style="font-size: 1.05em; line-height: 1.6; font-weight: bold; color: #166534; text-align: center; margin-bottom: 0;">
+        Thanks to this formula, you can calculate the total result of a repetitive multiplying process without having to go through every single step.
+      </p>
     </div>
 
+    <!-- PART 3 -->
+    <h2 class="section-title">🛡️ PART 3: PREVENTION (5K)</h2>
     <div class="q-block">
-      <h3>Question 3 — Total Infections after Cycle 8 (Short Answer)</h3>
-      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 2, q = 3. Find S₈ (total infections after 8 cycles).</p>
-      <div class="answer">Student's answer: ${q3_val} ${q3_val === '6560' ? '✅ Correct!' : q3_val !== '(not answered)' ? '❌ (Correct answer: 6560)' : ''}</div>
+      <span class="q-title">Question 1: A New Variant Appears (Short Answer)</span>
+      <p class="question-text">Assume a new variant appears with <strong>5 initial infections</strong> in the first cycle (<span class="math-symbol">u₁ = 5</span>). Because no prevention is taken yet, each infected person spreads the virus to 4 others in the next cycle (Infection rate <span class="math-symbol">q = 4</span>). How many new infections will be recorded exactly in the 5th infection cycle (u₅)?</p>
+      <div class="answer">Student's answer: <b>${q1_val}</b> <br>${q1_res}</div>
     </div>
-
     <div class="q-block">
-      <h3>Question 4 — Effectiveness of Prevention (Drag & Drop)</h3>
-      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 16000 and q = 0.5. Forecast new infections for 8 weeks.</p>
+      <span class="q-title">Question 2: Number of Infections at Cycle 7 (Multiple Choice)</span>
+      <p class="question-text">An outbreak starts from 2 "Patient Zeros" (<span class="math-symbol">u₁ = 2</span>). The infection rate is <span class="math-symbol">q = 3</span>. Calculate the number of infected cases exactly at cycle 7 (u₇).</p>
+      <div class="answer">Student's answer: <b>${q2_val}</b></div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 3: Total Infections after Cycle 8 (Short Answer)</span>
+      <p class="question-text">Using the same data from Question 2 (<span class="math-symbol">u₁ = 2</span>, <span class="math-symbol">q = 3</span>). Calculate the total number of infected people after cycle 8 (S₈).</p>
+      <div class="answer">Student's answer: <b>${q3_val}</b> <br>${q3_res}</div>
+    </div>
+    <div class="q-block">
+      <span class="q-title">Question 4: Effectiveness of Prevention (Drag and Drop)</span>
+      <p class="question-text">Thanks to vaccination and 5K, the infection rate dropped to <strong><span class="math-symbol">q = 0.5</span></strong>. This means the number of new infections this week is only half of last week's. Given that the first week recorded <span class="math-symbol">u₁ = 16000</span> new infections. Forecast new infections for the 8 cycles.</p>
       <table>
         <thead>
           <tr>
@@ -1640,6 +1803,25 @@ const reportHTML = `<!DOCTYPE html>
         <tbody>${q4Rows}</tbody>
       </table>
     </div>
+
+    <!-- EXACT MATCH TAKEAWAY TAB 3 -->
+    <div style="background: #ecfdf5; border: 2px solid #10b981; padding: 25px; border-radius: 12px; margin-top: 30px; text-align: center;">
+      <h3 style="color: #047857; margin-top: 0;">🌟 CONGRATULATIONS ON COMPLETING THE MISSION!</h3>
+      <p style="color:#065f46; margin-bottom: 20px; line-height: 1.6;">
+        Notice how the number of new infections drops each week? If we maintain <span class="math-symbol" style="white-space: nowrap;">q < 1</span> forever, the number of new infections will eventually approach 0. This forms an <strong>infinite decreasing geometric sequence (cấp số nhân lùi vô hạn)</strong>.
+      </p>
+      <div style="color: #065f46;">
+        When <span class="math-symbol" style="white-space: nowrap;">n</span> is very large, <span class="math-symbol" style="white-space: nowrap;">q<sup>n</sup></span> approaches 0. The formula simplifies to:<br>
+        <div style="font-size: 1.5em; margin-top: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
+          <span class="math-symbol">S = </span>
+          <div class="fraction">
+            <span class="num math-symbol">u<sub>1</sub></span>
+            <span class="den math-symbol">1 - q</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="report-footer">
@@ -1648,7 +1830,7 @@ const reportHTML = `<!DOCTYPE html>
       <button class="print-btn" onclick="window.print()">🖨️ Print Report</button>
       <button class="dl-btn" onclick="downloadReport()">⬇️ Download as HTML</button>
     </div>
-    <p style="margin:10px 0 0; font-size:0.8em; color:#94a3b8;">Generated by Pandemic Explorer · Part 3 Complete ✅</p>
+    <p style="margin:10px 0 0; font-size:0.8em; color:#94a3b8;">Generated by Pandemic Explorer · All Parts Complete ✅</p>
   </div>
 </div>
 <script>
@@ -1656,7 +1838,7 @@ function downloadReport() {
   const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'Part3_Report_${state.name.replace(/\s+/g,'_')}.html';
+  a.download = \`PandemicExplorer_Report_${safeName}.html\`;
   a.click();
 }
 <\/script>
@@ -1676,7 +1858,6 @@ if (state.mode === 1) finishAll();
 // ==========================================
 // TAB 5: NIPAH & WORKSHEET SUBMISSION
 // ==========================================
-
 function updateFileName(input) {
 const fileNameDisplay = document.getElementById('uploadFileName');
 if (input.files && input.files.length > 0) {
