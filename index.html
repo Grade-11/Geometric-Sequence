@@ -117,6 +117,15 @@ th { background: #f8fafc; color: #475569; position: sticky; top: 0; }
 .fraction .num { border-bottom: 2px solid currentColor; padding: 0 8px; }
 .fraction .den { padding: 0 8px; }
 
+/* GIFT MODAL */
+.gift-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; backdrop-filter: blur(6px); animation: fadeIn 0.3s; }
+.gift-modal-box { background: white; border-radius: 24px; padding: 40px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.4); border-top: 6px solid var(--success); position: relative; }
+.gift-emoji { font-size: 80px; cursor: pointer; transition: transform 0.3s; display: inline-block; animation: bounce 1s infinite alternate; filter: drop-shadow(0 4px 8px rgba(16,185,129,0.4)); }
+.gift-emoji:hover { transform: scale(1.15) rotate(-5deg); }
+@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+.gift-modal-box h3 { color: var(--success); font-size: 1.6em; margin: 15px 0 8px; }
+.gift-modal-box p { color: #64748b; margin-bottom: 20px; line-height: 1.5; }
+
 /* DRAG & DROP */
 .drag-container { display: flex; gap: 10px; margin: 15px 0; padding: 15px; background: #fff; border-radius: 8px; border: 1px dashed #cbd5e1; flex-wrap: wrap; }
 .drag-item { display: inline-block; padding: 8px 20px; background: var(--primary); color: white; border-radius: 6px; cursor: grab; font-weight: bold; font-family: monospace; font-size: 1.1em; user-select: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -633,45 +642,45 @@ Name: <input type="text" class="fill-blank" id="t2_q4" style="width: 250px;">
 
 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; align-items: center; font-size: 1.1em; padding: 10px; background: white; border-radius: 8px; border: 1px dashed var(--primary);">
 <span style="font-family: 'Times New Roman', serif; font-weight: bold; color: var(--primary-dark);">S<sub>5</sub> = </span>
-<select id="t2_q7_eq1" class="fill-blank" style="width: auto; padding: 2px;">
+<select id="t2_q7_eq1" class="fill-blank math-symbol" style="width: auto; padding: 2px; font-size: 1em;">
 <option value="">...</option>
-<option value="u1.q+">u1.q +</option>
-<option value="u1.q4">u1.q^4</option>
-<option value="u1.q2+">u1.q^2 +</option>
-<option value="u1+">u1 +</option>
-<option value="u1.q3+">u1.q^3 +</option>
+<option value="u1.q+">u₁.q +</option>
+<option value="u1.q4">u₁.q⁴</option>
+<option value="u1.q2+">u₁.q² +</option>
+<option value="u1+">u₁ +</option>
+<option value="u1.q3+">u₁.q³ +</option>
 </select>
-<select id="t2_q7_eq2" class="fill-blank" style="width: auto; padding: 2px;">
+<select id="t2_q7_eq2" class="fill-blank math-symbol" style="width: auto; padding: 2px; font-size: 1em;">
 <option value="">...</option>
-<option value="u1.q+">u1.q +</option>
-<option value="u1.q4">u1.q^4</option>
-<option value="u1.q2+">u1.q^2 +</option>
-<option value="u1+">u1 +</option>
-<option value="u1.q3+">u1.q^3 +</option>
+<option value="u1.q+">u₁.q +</option>
+<option value="u1.q4">u₁.q⁴</option>
+<option value="u1.q2+">u₁.q² +</option>
+<option value="u1+">u₁ +</option>
+<option value="u1.q3+">u₁.q³ +</option>
 </select>
-<select id="t2_q7_eq3" class="fill-blank" style="width: auto; padding: 2px;">
+<select id="t2_q7_eq3" class="fill-blank math-symbol" style="width: auto; padding: 2px; font-size: 1em;">
 <option value="">...</option>
-<option value="u1.q+">u1.q +</option>
-<option value="u1.q4">u1.q^4</option>
-<option value="u1.q2+">u1.q^2 +</option>
-<option value="u1+">u1 +</option>
-<option value="u1.q3+">u1.q^3 +</option>
+<option value="u1.q+">u₁.q +</option>
+<option value="u1.q4">u₁.q⁴</option>
+<option value="u1.q2+">u₁.q² +</option>
+<option value="u1+">u₁ +</option>
+<option value="u1.q3+">u₁.q³ +</option>
 </select>
-<select id="t2_q7_eq4" class="fill-blank" style="width: auto; padding: 2px;">
+<select id="t2_q7_eq4" class="fill-blank math-symbol" style="width: auto; padding: 2px; font-size: 1em;">
 <option value="">...</option>
-<option value="u1.q+">u1.q +</option>
-<option value="u1.q4">u1.q^4</option>
-<option value="u1.q2+">u1.q^2 +</option>
-<option value="u1+">u1 +</option>
-<option value="u1.q3+">u1.q^3 +</option>
+<option value="u1.q+">u₁.q +</option>
+<option value="u1.q4">u₁.q⁴</option>
+<option value="u1.q2+">u₁.q² +</option>
+<option value="u1+">u₁ +</option>
+<option value="u1.q3+">u₁.q³ +</option>
 </select>
-<select id="t2_q7_eq5" class="fill-blank" style="width: auto; padding: 2px;">
+<select id="t2_q7_eq5" class="fill-blank math-symbol" style="width: auto; padding: 2px; font-size: 1em;">
 <option value="">...</option>
-<option value="u1.q+">u1.q +</option>
-<option value="u1.q4">u1.q^4</option>
-<option value="u1.q2+">u1.q^2 +</option>
-<option value="u1+">u1 +</option>
-<option value="u1.q3+">u1.q^3 +</option>
+<option value="u1.q+">u₁.q +</option>
+<option value="u1.q4">u₁.q⁴</option>
+<option value="u1.q2+">u₁.q² +</option>
+<option value="u1+">u₁ +</option>
+<option value="u1.q3+">u₁.q³ +</option>
 </select>
 </div>
 </div>
@@ -937,6 +946,18 @@ When <span class="math-symbol" style="white-space: nowrap;">n</span> is very lar
 </div>
 </div>
 
+<!-- GIFT MODAL FOR PART 3 COMPLETION -->
+<div id="giftModal" class="gift-modal-overlay" style="display:none;">
+  <div class="gift-modal-box">
+    <div id="giftEmoji" class="gift-emoji" onclick="openReport()" title="Click to open your report!">🎁</div>
+    <h3>🎉 Congratulations!</h3>
+    <p>You have completed <strong>Part 3: Prevention (5K)</strong>!<br>
+    Click the gift box above to receive your <strong>learning report</strong> — a summary of all your answers that you can download and bring to the next class!</p>
+    <button class="btn-success" onclick="openReport()" style="font-size:1.1em; padding:12px 30px; margin-bottom:10px; width:100%;">📋 Open My Report</button>
+    <button onclick="closeGiftAndContinue()" style="background:#64748b; font-size:0.95em; padding:10px 20px; width:100%;">✅ Continue to Finish</button>
+  </div>
+</div>
+
 <div class="chat-btn" onclick="toggleChat()">💬</div>
 <div id="chatWindow" class="chat-window">
 <div class="chat-header">
@@ -959,7 +980,7 @@ When <span class="math-symbol" style="white-space: nowrap;">n</span> is very lar
 // ==========================================
 const apiKey = "";
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTKvZGD5QWx4YMVg1OFbagvSjMDaphUmHDNx6KwC6M4WzB6HBVNolmWEvBjb6oL1-6Rw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwsx6tYQ-phmaHgvGtH-Azc7MOFHXu68ydvkkNaS4XzoA2IYy0PwSu8VnpsrPh6TgM/exec';
 
 let state = {
 name: '', id: '', studentClass: '', startTime: null, mode: 1,
@@ -974,34 +995,33 @@ let charts = { spread: null, prevention: null, vaccine: null };
 // CORE FUNCTIONS & LOGGING
 // ==========================================
 function logAction(action, detail, finishTime = null, fileData = null, fileName = null) {
-if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbzTKvZGD5QWx4YMVg1OFbagvSjMDaphUmHDNx6KwC6M4WzB6HBVNolmWEvBjb6oL1-6Rw/exec")) {
+if(!GOOGLE_SCRIPT_URL) {
 console.error("Bạn chưa điền GOOGLE_SCRIPT_URL");
 return;
 }
 
-const params = new URLSearchParams();
+// BƯỚC SỬA 1: Dùng FormData thay vì URLSearchParams
+// FormData an toàn hơn khi truyền chuỗi file (Base64) dung lượng lớn mà không bị thất thoát ký tự.
+const formData = new FormData();
 
-params.append("StudentName", state.name);
-params.append("ID", state.id);
-params.append("Class", state.studentClass);
-params.append("Action", action);
-params.append("Detail", detail);
+formData.append("StudentName", state.name);
+formData.append("ID", state.id);
+formData.append("Class", state.studentClass);
+formData.append("Action", action);
+formData.append("Detail", detail);
 
 if(finishTime) {
-params.append("Duration", finishTime);
+formData.append("Duration", finishTime);
 }
 if(fileData) {
-params.append("FileBase64", fileData);
-params.append("fileName", fileName);
+formData.append("fileData", fileData);
+formData.append("fileName", fileName);
 }
 
 fetch(GOOGLE_SCRIPT_URL, {
 method: 'POST',
 mode: 'no-cors',
-headers: {
-'Content-Type': 'application/x-www-form-urlencoded'
-},
-body: params
+body: formData // Bỏ thuộc tính headers, để browser tự thiết lập multipart/form-data
 }).then(() => {
 console.log(`Sent data [${action}] to Google Sheet.`);
 if(action === 'Submit Tab 1 Exercise' || action === 'Submit' || action === 'Submit Nipah Worksheet' || action === 'Submit Final Solution Tab 2') {
@@ -1189,6 +1209,20 @@ const q5_2 = document.getElementById('q5_2').value || "?";
 const mcq = document.querySelector('input[name="mcq_formula"]:checked');
 const q6 = mcq ? mcq.value : "Not selected";
 
+// Logic kiểm tra đáp án câu 6
+if (q6 !== "B") {
+const resDiv = document.getElementById('ex_result_tab1');
+resDiv.style.display = 'block';
+resDiv.className = 'inline-alert alert-error';
+resDiv.style.backgroundColor = '#fee2e2';
+resDiv.style.borderColor = '#fca5a5';
+resDiv.style.color = '#991b1b';
+resDiv.innerHTML = `❌ Incorrect answer for Question 6. Please check Dr. GeoBot's message!`;
+
+sendBotMessage("🤖 **Dr. GeoBot:** Your answer for Question 6 is incorrect. Please try again!\n\n*Hint: Look closely at your observation in Question 5. The exponent of q is always SMALLER than the index of u by exactly 1. So if the index is n, the exponent must be...*", true);
+return; // Dừng lại, không hiển thị khung tổng kết
+}
+
 const details =
 "--- STEP-BY-STEP SOLUTION ---\n" +
 "Q1 (Quantity): u1=" + q1_1 + ", u2=" + q1_2 + ", u3=" + q1_3 + ", u4=" + q1_4 + ", u5=" + q1_5 + "\n" +
@@ -1206,7 +1240,7 @@ resDiv.className = 'inline-alert alert-success';
 resDiv.style.backgroundColor = '#e0f2fe';
 resDiv.style.borderColor = '#7dd3fc';
 resDiv.style.color = '#0284c7';
-resDiv.innerHTML = `✅ Your answers have been recorded in the system.`;
+resDiv.innerHTML = `✅ Excellent! You have successfully identified the general formula.`;
 
 const formulaBox = document.getElementById('t1_conclusion');
 formulaBox.style.display = 'block';
@@ -1406,8 +1440,9 @@ resDiv.style.display = 'block'; resDiv.className = 'inline-alert'; resDiv.style.
 resDiv.innerHTML = `⏳ Processing and uploading file...`;
 
 reader.onload = function(e) {
-const base64Data = e.target.result.split(',')[1];
-logAction('Submit Final Solution Tab 2', 'Uploaded file', null, base64Data, file.name);
+// BƯỚC SỬA 2: Giữ nguyên TOÀN BỘ Data URL, không cắt bỏ .split(',')[1]
+const fullDataUrl = e.target.result;
+logAction('Submit Final Solution Tab 2', 'Uploaded file', null, fullDataUrl, file.name);
 
 resDiv.className = 'inline-alert alert-success';
 resDiv.style.backgroundColor = '#dcfce7'; resDiv.style.color = '#166534';
@@ -1500,7 +1535,144 @@ sendBotMessage("🤖 **Dr. GeoBot:** You need to match the sequence in Question 
 function completeTab3() {
 state.tabsDone.t3 = true;
 document.querySelector('[data-tab="tab3"]').classList.add('completed');
+// Show gift modal instead of going straight to finishAll
+document.getElementById('giftModal').style.display = 'flex';
+}
+
+function closeGiftAndContinue() {
+document.getElementById('giftModal').style.display = 'none';
 if (state.mode === 1) finishAll();
+}
+
+function openReport() {
+document.getElementById('giftModal').style.display = 'none';
+
+// Collect all Tab 3 answers
+const q1_val = document.getElementById('t3_q1').value || "(not answered)";
+const mcq2 = document.querySelector('input[name="t3_q2"]:checked');
+const q2_val = mcq2 ? mcq2.value + (mcq2.value === 'A' ? ' — 1458 ✅' : ' (incorrect)') : "(not answered)";
+const q3_val = document.getElementById('t3_q3').value || "(not answered)";
+
+const dz = ['dz_u1','dz_u2','dz_u3','dz_u4','dz_u5','dz_u6','dz_u7','dz_u8'];
+const correctDZ = ['16000','8000','4000','2000','1000','500','250','125'];
+let q4Rows = '';
+dz.forEach((id, i) => {
+const val = document.getElementById(id).dataset.value || "(empty)";
+const isCorrect = val === correctDZ[i];
+q4Rows += `<tr>
+  <td style="padding:8px 12px; border:1px solid #e2e8f0; font-family:'Times New Roman',serif; font-weight:bold; color:#0284c7;">u<sub>${i+1}</sub> (Week ${i+1})</td>
+  <td style="padding:8px 12px; border:1px solid #e2e8f0; text-align:center; font-weight:bold; color:${isCorrect ? '#059669' : '#dc2626'};">${val} ${isCorrect ? '✅' : '❌'}</td>
+  <td style="padding:8px 12px; border:1px solid #e2e8f0; text-align:center; color:#64748b;">${correctDZ[i]}</td>
+</tr>`;
+});
+
+const now = new Date();
+const dateStr = now.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit', year:'numeric'});
+const timeStr = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+
+const reportHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 3 Learning Report — ${state.name}</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f0f9ff; margin: 0; padding: 30px; color: #334155; }
+  .report-card { max-width: 750px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+  .report-header { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 30px; text-align: center; }
+  .report-header h1 { margin: 0 0 5px; font-size: 1.8em; }
+  .report-header p { margin: 5px 0; opacity: 0.9; font-size: 0.95em; }
+  .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.85em; margin: 3px; }
+  .report-body { padding: 30px; }
+  .q-block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
+  .q-block h3 { margin: 0 0 10px; color: #0284c7; font-size: 1.05em; border-left: 4px solid #0ea5e9; padding-left: 10px; }
+  .q-block .answer { font-size: 1.15em; font-weight: bold; color: #1e293b; margin: 8px 0 0; padding: 10px 15px; background: white; border-radius: 6px; border: 1px solid #cbd5e1; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em; }
+  th { background: #f1f5f9; color: #475569; padding: 10px 12px; border: 1px solid #e2e8f0; text-align: left; }
+  .report-footer { background: #f1f5f9; padding: 20px 30px; text-align: center; color: #64748b; font-size: 0.9em; border-top: 1px solid #e2e8f0; }
+  .print-btn { background: #0ea5e9; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; margin: 5px; }
+  .dl-btn { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; margin: 5px; }
+  @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .report-card { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="report-card">
+  <div class="report-header">
+    <div style="font-size:40px; margin-bottom:8px;">🛡️📋</div>
+    <h1>Part 3 Learning Report</h1>
+    <p><strong>PANDEMIC EXPLORER</strong> — Prevention (5K) & Control Exercises</p>
+    <div style="margin-top:12px;">
+      <span class="badge">👤 ${state.name}</span>
+      <span class="badge">🆔 ${state.id}</span>
+      <span class="badge">🏫 Class ${state.studentClass}</span>
+      <span class="badge">📅 ${dateStr} at ${timeStr}</span>
+    </div>
+  </div>
+
+  <div class="report-body">
+    <div class="q-block">
+      <h3>Question 1 — A New Variant Appears (Short Answer)</h3>
+      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 5 and q = 4. Find the number of new infections at the 5th cycle (u₅).</p>
+      <div class="answer">Student's answer: ${q1_val} ${q1_val === '1280' ? '✅ Correct!' : q1_val !== '(not answered)' ? '❌ (Correct answer: 1280)' : ''}</div>
+    </div>
+
+    <div class="q-block">
+      <h3>Question 2 — Number of Infections at Cycle 7 (Multiple Choice)</h3>
+      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 2, q = 3. Find u₇.</p>
+      <div class="answer">Student's answer: ${q2_val}</div>
+    </div>
+
+    <div class="q-block">
+      <h3>Question 3 — Total Infections after Cycle 8 (Short Answer)</h3>
+      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 2, q = 3. Find S₈ (total infections after 8 cycles).</p>
+      <div class="answer">Student's answer: ${q3_val} ${q3_val === '6560' ? '✅ Correct!' : q3_val !== '(not answered)' ? '❌ (Correct answer: 6560)' : ''}</div>
+    </div>
+
+    <div class="q-block">
+      <h3>Question 4 — Effectiveness of Prevention (Drag & Drop)</h3>
+      <p style="color:#64748b; font-size:0.92em; margin:0 0 6px;">Given u₁ = 16000 and q = 0.5. Forecast new infections for 8 weeks.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th style="text-align:center;">Student's Answer</th>
+            <th style="text-align:center;">Correct Answer</th>
+          </tr>
+        </thead>
+        <tbody>${q4Rows}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="report-footer">
+    <p style="margin:0 0 12px;">Keep this report for your next class session! 📚</p>
+    <div class="no-print">
+      <button class="print-btn" onclick="window.print()">🖨️ Print Report</button>
+      <button class="dl-btn" onclick="downloadReport()">⬇️ Download as HTML</button>
+    </div>
+    <p style="margin:10px 0 0; font-size:0.8em; color:#94a3b8;">Generated by Pandemic Explorer · Part 3 Complete ✅</p>
+  </div>
+</div>
+<script>
+function downloadReport() {
+  const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Part3_Report_${state.name.replace(/\s+/g,'_')}.html';
+  a.click();
+}
+<\/script>
+</body>
+</html>`;
+
+const reportWin = window.open('', '_blank');
+reportWin.document.write(reportHTML);
+reportWin.document.close();
+
+// After viewing report, continue
+setTimeout(() => {
+if (state.mode === 1) finishAll();
+}, 500);
 }
 
 // ==========================================
@@ -1534,8 +1706,9 @@ statusDiv.style.color = '#0284c7';
 statusDiv.innerText = "⏳ Đang gửi file lên hệ thống...";
 
 reader.onload = function(e) {
-const base64Data = e.target.result.split(',')[1];
-logAction('Submit Nipah Worksheet', 'Uploaded file', null, base64Data, file.name);
+// BƯỚC SỬA 2: Giữ nguyên TOÀN BỘ Data URL
+const fullDataUrl = e.target.result;
+logAction('Submit Nipah Worksheet', 'Uploaded file', null, fullDataUrl, file.name);
 
 statusDiv.style.color = '#10b981';
 statusDiv.innerText = "✅ Đã nộp thành công!";
